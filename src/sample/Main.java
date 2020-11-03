@@ -7,12 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    final private int height = 1000 ;
+    final private double ratio = (9/16.0) ;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Game");
+        primaryStage.setScene(new Scene(root, height*ratio, height));
+
         primaryStage.show();
     }
 
