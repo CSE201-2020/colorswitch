@@ -7,22 +7,31 @@ import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Arc;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class CircleObstacle extends Application{
 
+    final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         // TODO Auto-generated method stub
 
-        //Creating Rectangle
-        Rectangle rect = new Rectangle(200,100,200,200);
-        rect.setFill(Color.LIMEGREEN);
-        rect.setStroke(Color.HOTPINK);
-        rect.setStrokeWidth(5);
+        // Creating Circle
+        Group root = new Group();
+        int deg = 0;
+
+        for (int i = 0 ;i < 4; ++i) {
+            Arc rect = new Arc(200,200,100,100,90*i,90);
+
+            rect.setStroke(colors[i]);
+            rect.setStrokeWidth(10);
+            root.getChildren().add(rect);
+
+        }
 
         //Instantiating RotateTransition class
         RotateTransition rotate = new RotateTransition();
@@ -40,18 +49,17 @@ public class CircleObstacle extends Application{
         rotate.setDuration(Duration.millis(1000));
 
         //the transition will be auto reversed by setting this to true
-        rotate.setAutoReverse(true);
+        //rotate.setAutoReverse(true);
 
         //setting Rectangle as the node onto which the
 // transition will be applied
-        rotate.setNode(rect);
+        rotate.setNode(root);
 
         //playing the transition
         rotate.play();
 
         //Configuring Group and Scene
-        Group root = new Group();
-        root.getChildren().add(rect);
+
         Scene scene = new Scene(root,600,400,Color.BLACK);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Rotate Transition example");
