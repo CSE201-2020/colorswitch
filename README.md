@@ -1,5 +1,6 @@
 # colorswitch
 java colorswitch game
+
 ##How to run
   1. Clone the repo
   1. Open folder as Intellij Project
