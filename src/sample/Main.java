@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class git Main extends Application {
+public class  Main extends Application {
     final private int height = 700 ;
     final private double ratio = (9/16.0) ;
 

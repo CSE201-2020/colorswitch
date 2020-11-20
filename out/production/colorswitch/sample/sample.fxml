@@ -14,7 +14,7 @@
             </image>
         </ImageView>
 
-        <ImageView fx:id="loadGame" fitHeight="109.0" fitWidth="200.0"  layoutY="600.0"  pickOnBounds="true" preserveRatio="true" >
+        <ImageView fx:id="loadGame" fitHeight="109.0" fitWidth="200.0"  layoutY="600.0" onMouseClicked="#loadGame" pickOnBounds="true" preserveRatio="true" >
             <image>
                 <Image url="@../assets/loadgame.png" />
             </image>
