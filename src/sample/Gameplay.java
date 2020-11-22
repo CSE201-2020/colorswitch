@@ -24,7 +24,7 @@ public class Gameplay {
         MainRoot.getChildren().add(root2);
         MainRoot.getChildren().add(root);
 
-        Scene mainScene =new Scene(MainRoot, height*ratio, height);
+        mainScene =new Scene(MainRoot, height*ratio, height);
         PerspectiveCamera camera = new PerspectiveCamera();
 //        camera.setTranslateZ(-1000);
 //        camera.setNearClip(0.1);
