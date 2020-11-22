@@ -23,6 +23,7 @@ public class  Main extends Application {
         primaryStage.setTitle("Game");
         primaryStage.setScene(new Scene(root, height*ratio, height));
         primaryStage.show();
+        System.out.println(primaryStage);
     }
 
 
