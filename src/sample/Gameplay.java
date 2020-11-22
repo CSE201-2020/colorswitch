@@ -71,7 +71,7 @@ public class Gameplay {
         MainRoot.getChildren().add(makeStarCount());
         MainRoot.getChildren().add(ObstaclesRoot);
       
-        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), MainRoot);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), ObstaclesRoot);
         tt.setByY(1200f);
         tt.setCycleCount(1);
 
