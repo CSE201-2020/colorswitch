@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainRoot" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #252525;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane fx:id="mainRoot" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
 
         <ImageView fx:id="loadGame" fitHeight="109.0" fitWidth="200.0" layoutX="100.0" layoutY="489.0" onMouseClicked="#loadGame" pickOnBounds="true" preserveRatio="true">
@@ -36,6 +36,11 @@
          </font>
       </Label>
       <Button layoutX="165.0" layoutY="563.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="69.0" style="-fx-background-image: url=&quot;@../assets/exit.png&quot;;" text="Exit Game" textFill="#27940f" />
+      <ImageView fx:id="startGame" fitHeight="67.0" fitWidth="70.0" layoutX="170.0" layoutY="317.0" onMouseClicked="#startGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/play.png" />
+         </image>
+      </ImageView>
     </children>
 
 </AnchorPane>

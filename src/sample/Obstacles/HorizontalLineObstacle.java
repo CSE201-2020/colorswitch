@@ -18,7 +18,7 @@ import javafx.util.Duration;
 public class HorizontalLineObstacle  {
     final private Group root;
     final private TranslateTransition animation;
-    final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};
+    final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
     public HorizontalLineObstacle(int size, int direction, int thickness, int posX, int posY) {
         root = new Group();
 

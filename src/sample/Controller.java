@@ -3,12 +3,15 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Controller {
@@ -29,6 +32,7 @@ public class Controller {
         System.out.println(node);
         System.out.println(gameplay);
         System.out.println(stage);
+
         stage.setTitle("gameplay");
         stage.setScene(gameplay.getMainScene());
         stage.show();
@@ -41,12 +45,14 @@ public class Controller {
     }
     @FXML
     void loadGame(MouseEvent event) throws Exception{
-        VBox layout1= new VBox(20);
+       AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
 
-        Label gameplay = new Label("Load Game heafjaksldfjal;sjfl;asdjf;kasdlf;lkasdfl;asdkfl;asdjfl;asdkf;lasdjf;lasdkre");
-        layout1.getChildren().add(gameplay);
-
-        mainRoot.getChildren().setAll(layout1);
+        Node node=(Node) event.getSource();
+        Stage stage=(Stage) node.getScene().getWindow();
+        Scene mainScene =new Scene(pane2, 400, 700);
+        stage.setTitle("gameplay");
+        stage.setScene(mainScene);
+        stage.show();
     }
 
 }
