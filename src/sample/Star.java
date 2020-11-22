@@ -28,8 +28,8 @@ public class Star {
 
 
         animation = new ScaleTransition(Duration.millis(1000), star);
-        animation.setByX(0.3f);
-        animation.setByY(0.3f);
+        animation.setByX(0.4f);
+        animation.setByY(0.4f);
         animation.setCycleCount(450);
         animation.setAutoReverse(true);
 

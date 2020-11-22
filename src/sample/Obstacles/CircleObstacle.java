@@ -12,8 +12,9 @@ import javafx.scene.shape.Arc;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sample.Obstacle;
 
-public class CircleObstacle  {
+public class CircleObstacle extends Obstacle {
     final private Group root;
     final private RotateTransition animation;
     final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};

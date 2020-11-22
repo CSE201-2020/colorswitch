@@ -18,13 +18,13 @@ public class Player {
     Interpolator interpolator = new Interpolator() {
         @Override
         protected double curve(double t) {
-            return -t*4 * (1 - 2*t);
+            return -t*3 * (1 - 3*t);
         }
 
     };
 
-    Player(Color initColor) {
-        ball = new Circle(100,800,12,initColor );
+    Player(Color initColor,int posX, int posY) {
+        ball = new Circle(posX,posY,12,initColor );
 
         ball.setFill(initColor);
         initAnimation();
