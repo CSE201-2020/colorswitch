@@ -27,7 +27,7 @@ public class CircleObstacle extends Obstacle {
             Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
 
             rect.setStroke(colors[i]);
-            rect.setFill(Color.LIGHTGRAY);
+            rect.setFill(Color.web("#252525"));
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
 
