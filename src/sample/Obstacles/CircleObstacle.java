@@ -1,6 +1,7 @@
 package sample.Obstacles;
 
 
+import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
@@ -12,62 +13,70 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class CircleObstacle extends Application{
-
+public class CircleObstacle  {
+    final private Group root;
+    final private RotateTransition animation;
     final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // TODO Auto-generated method stub
-
+    public CircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
         // Creating Circle
-        Group root = new Group();
+        root = new Group();
         int deg = 0;
 
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(200,200,100,100,90*i,90);
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
 
             rect.setStroke(colors[i]);
-            rect.setStrokeWidth(10);
+            rect.setFill(Color.WHITE);
+            rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
 
         }
 
         //Instantiating RotateTransition class
-        RotateTransition rotate = new RotateTransition();
+        animation = new RotateTransition();
 
         //Setting Axis of rotation
-        rotate.setAxis(Rotate.Z_AXIS);
+        animation.setAxis(Rotate.Z_AXIS);
 
         // setting the angle of rotation
-        rotate.setByAngle(360);
+        animation.setByAngle(direction>0? 360 :-360);
 
         //setting cycle count of the rotation
-        rotate.setCycleCount(500);
+        animation.setCycleCount(450);
 
         //Setting duration of the transition
-        rotate.setDuration(Duration.millis(1000));
+        animation.setDuration(Duration.millis(2000));
+        animation.setInterpolator(Interpolator.LINEAR);
 
         //the transition will be auto reversed by setting this to true
         //rotate.setAutoReverse(true);
 
         //setting Rectangle as the node onto which the
 // transition will be applied
-        rotate.setNode(root);
-
+        animation.setNode(root);
         //playing the transition
-        rotate.play();
-
-        //Configuring Group and Scene
-
-        Scene scene = new Scene(root,600,400,Color.BLACK);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Rotate Transition example");
-        primaryStage.show();
 
     }
-    public static void main(String[] args) {
-        launch(args);
+
+    public Group getRoot() {
+        return root;
     }
 
+    public RotateTransition getAnimation() {
+        return animation;
+    }
+
+//    @Override
+//    public void start(Stage primaryStage) throws Exception {
+//        // TODO Auto-generated method stub
+//
+//
+//        //Configuring Group and Scene
+////
+////        Scene scene = new Scene(root,600,400,Color.BLACK);
+////        primaryStage.setScene(scene);
+////        primaryStage.setTitle("Rotate Transition example");
+////        primaryStage.show();
+//
+//    }
 }
