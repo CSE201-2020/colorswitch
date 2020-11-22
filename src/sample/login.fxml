@@ -4,11 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane fx:id="mainRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <effect>
@@ -35,11 +35,12 @@
             <Font name="Calibri" size="17.0" />
          </font>
       </Label>
-      <Button layoutX="136.0" layoutY="619.0" mnemonicParsing="false" onAction="#loadmenu" style="-fx-background-color: yellow; -fx-background-radius: 15px 5px;" text="ADD NEW USER">
+      <Button layoutX="301.0" layoutY="607.0" mnemonicParsing="false" onAction="#loadmenu" style="-fx-background-color: yellow; -fx-background-radius: 15px 5px;" text="+">
          <font>
-            <Font name="Calibri Bold" size="14.0" />
+            <Font name="Calibri Bold" size="24.0" />
          </font>
       </Button>
       <Button layoutX="277.0" layoutY="529.0" mnemonicParsing="false" onAction="#loadmenu" style="-fx-background-color: #42e3c5; -fx-background-radius: 15px 5px;" text="Select" />
+      <TextField layoutX="67.0" layoutY="611.0" prefHeight="34.0" prefWidth="162.0" promptText="Add Username" />
    </children>
 </AnchorPane>

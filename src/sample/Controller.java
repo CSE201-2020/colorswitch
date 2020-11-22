@@ -43,7 +43,7 @@ public class Controller {
     void loadGame(MouseEvent event) throws Exception{
         VBox layout1= new VBox(20);
 
-        Label gameplay = new Label("Load Game here");
+        Label gameplay = new Label("Load Game heafjaksldfjal;sjfl;asdjf;kasdlf;lkasdfl;asdkfl;asdjfl;asdkf;lasdjf;lasdkre");
         layout1.getChildren().add(gameplay);
 
         mainRoot.getChildren().setAll(layout1);
