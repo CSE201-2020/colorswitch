@@ -1,9 +1,6 @@
 package sample;
 
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -33,13 +30,19 @@ public class Gameplay {
     Node makePauseButton(int x, int y) {
         String svg = "m282.824 0c-155.947 0-282.824 126.877-282.824 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824-126.877-282.824-282.824-282.824zm-35.353 388.883h-70.706v-212.118h70.706zm141.412 0h-70.706v-212.118h70.706z";
         SVGPath pause = new SVGPath();
+
         pause.setContent(svg);
+        pause.setFill(Color.GREEN);
         double ratio = 0.06;
         pause.setScaleY(ratio);
         pause.setScaleX(ratio);
         pause.setTranslateX(x);
         pause.setTranslateY(y);
         return pause;
+    }
+    Node makeStarCount() {
+        Star StarImage = new Star(350,40,Color.GREEN,1.1);
+        return StarImage.getRoot();
     }
         int center = 200;
     Gameplay (int height, double ratio) {
@@ -64,6 +67,7 @@ public class Gameplay {
         ObstaclesRoot.getChildren().add(ball);
 
         MainRoot.getChildren().add(makePauseButton(-230,-240));
+        MainRoot.getChildren().add(makeStarCount());
         MainRoot.getChildren().add(ObstaclesRoot);
 
         TranslateTransition tt = new TranslateTransition(Duration.millis(10000), ObstaclesRoot);
@@ -71,7 +75,7 @@ public class Gameplay {
         tt.setCycleCount(1);
 
 //        tt.setAutoReverse(true);
-        //tt.play();
+        tt.pause();
 
         mainScene =new Scene(MainRoot, height*ratio, height);
         PerspectiveCamera camera = new PerspectiveCamera();
