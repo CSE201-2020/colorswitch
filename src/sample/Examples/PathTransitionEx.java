@@ -1,4 +1,4 @@
-package sample;
+package sample.Examples;
 
 import javafx.animation.PathTransition;
 import javafx.application.Application;
