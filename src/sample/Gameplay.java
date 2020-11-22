@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -51,7 +52,7 @@ public class Gameplay {
         MainRoot.getChildren().add(ball);
         MainRoot.getChildren().add(ObstaclesRoot);
 
-        TranslateTransition tt = new TranslateTransition(Duration.millis(10000), MainRoot);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), MainRoot);
         tt.setByY(1200f);
         tt.setCycleCount(1);
 
@@ -86,7 +87,7 @@ public class Gameplay {
                             public void handle(ActionEvent event) {
                                 double yPos =  ball.getTranslateY()+ MainRoot.getTranslateY();
                                 System.out.println(yPos);
-                                if (yPos < -300) tt.play();
+                                if (yPos < -500) tt.play();
                                 else tt.pause();
                             }
                         }));
@@ -99,6 +100,8 @@ public class Gameplay {
         plus0.getAnimation().play();
         plus1.getAnimation().play();
         star.getAnimation().play();
+
+        mainScene.setFill(Color.web("272727"));
     }
 
     public Scene getMainScene() {

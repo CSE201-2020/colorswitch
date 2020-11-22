@@ -17,7 +17,7 @@ import sample.Obstacle;
 public class CircleObstacle extends Obstacle {
     final private Group root;
     final private RotateTransition animation;
-    final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};
+    final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
     public CircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
         // Creating Circle
         root = new Group();
@@ -27,7 +27,7 @@ public class CircleObstacle extends Obstacle {
             Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
 
             rect.setStroke(colors[i]);
-            rect.setFill(Color.web("#252525"));
+            rect.setFill(Color.web("#272727"));
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
 

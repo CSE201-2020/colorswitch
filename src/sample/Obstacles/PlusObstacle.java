@@ -12,7 +12,7 @@ import javafx.util.Duration;
 public class PlusObstacle {
     final private Group root;
     final private RotateTransition animation;
-    final private Color colors [] = {Color.LIMEGREEN,Color.HOTPINK,Color.BLUE,Color.RED};
+    final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
     public PlusObstacle(int radius, int direction, int thickness, int posX, int posY) {
         root = new Group();
 
