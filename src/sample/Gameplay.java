@@ -7,11 +7,13 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
@@ -26,6 +28,18 @@ public class Gameplay {
     void addNewObstacles() {
         Obstacle random = new CircleObstacle(60,-1,10,100,200);
         ObstacleList.add(random);
+    }
+
+    Node makePauseButton(int x, int y) {
+        String svg = "m282.824 0c-155.947 0-282.824 126.877-282.824 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824-126.877-282.824-282.824-282.824zm-35.353 388.883h-70.706v-212.118h70.706zm141.412 0h-70.706v-212.118h70.706z";
+        SVGPath pause = new SVGPath();
+        pause.setContent(svg);
+        double ratio = 0.06;
+        pause.setScaleY(ratio);
+        pause.setScaleX(ratio);
+        pause.setTranslateX(x);
+        pause.setTranslateY(y);
+        return pause;
     }
         int center = 200;
     Gameplay (int height, double ratio) {
@@ -47,11 +61,12 @@ public class Gameplay {
         ObstaclesRoot.getChildren().add(star.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
+        ObstaclesRoot.getChildren().add(ball);
 
-        MainRoot.getChildren().add(ball);
+        MainRoot.getChildren().add(makePauseButton(-230,-240));
         MainRoot.getChildren().add(ObstaclesRoot);
 
-        TranslateTransition tt = new TranslateTransition(Duration.millis(10000), MainRoot);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(10000), ObstaclesRoot);
         tt.setByY(1200f);
         tt.setCycleCount(1);
 
@@ -84,7 +99,7 @@ public class Gameplay {
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                double yPos =  ball.getTranslateY()+ MainRoot.getTranslateY();
+                                double yPos =  ball.getTranslateY()+ ObstaclesRoot.getTranslateY();
                                 System.out.println(yPos);
                                 if (yPos < -300) tt.play();
                                 else tt.pause();
