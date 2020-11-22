@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import sample.Obstacles.CircleObstacle;
+import sample.Obstacles.PlusObstacle;
 
 public class Gameplay {
     private Scene mainScene;
@@ -17,12 +18,14 @@ public class Gameplay {
         CircleObstacle obs1 = new CircleObstacle(60,-1,10,100,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,250,200);
         CircleObstacle obs3 = new CircleObstacle(60,1,10,250,200);
+        PlusObstacle plus0 = new PlusObstacle(60,1,10,100,200);
         Group root = obs.getRoot();
         Group root2 = obs2.getRoot();
 
         Group MainRoot = new Group();
         MainRoot.getChildren().add(root2);
         MainRoot.getChildren().add(root);
+        MainRoot.getChildren().add(plus0.getRoot());
 
         mainScene =new Scene(MainRoot, height*ratio, height);
         PerspectiveCamera camera = new PerspectiveCamera();
@@ -51,6 +54,7 @@ public class Gameplay {
 
         obs.getAnimation().play();
         obs2.getAnimation().play();
+        plus0.getAnimation().play();
     }
 
     public Scene getMainScene() {
