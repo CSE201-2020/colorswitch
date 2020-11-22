@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import sample.Obstacles.CircleObstacle;
+import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 
 public class Gameplay {
@@ -15,17 +16,19 @@ public class Gameplay {
     Gameplay (int height, double ratio) {
 
         CircleObstacle obs = new CircleObstacle(60,-1,10,100,200);
-        CircleObstacle obs1 = new CircleObstacle(60,-1,10,100,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,250,200);
-        CircleObstacle obs3 = new CircleObstacle(60,1,10,250,200);
+        Star star = new Star(250, 200,Color.RED,1.1);
         PlusObstacle plus0 = new PlusObstacle(60,1,10,100,200);
-        Group root = obs.getRoot();
-        Group root2 = obs2.getRoot();
-
+        HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,100);
+        Player pl1 = new Player(Color.HOTPINK);
+        Circle ball = pl1.getBall();
         Group MainRoot = new Group();
-        MainRoot.getChildren().add(root2);
-        MainRoot.getChildren().add(root);
+        MainRoot.getChildren().add(obs2.getRoot());
+        MainRoot.getChildren().add(obs.getRoot());
         MainRoot.getChildren().add(plus0.getRoot());
+        MainRoot.getChildren().add(star.getRoot());
+        MainRoot.getChildren().add(ball);
+        MainRoot.getChildren().add(hor0.getRoot());
 
         mainScene =new Scene(MainRoot, height*ratio, height);
         PerspectiveCamera camera = new PerspectiveCamera();
@@ -37,8 +40,7 @@ public class Gameplay {
 //        System.out.println(root.getBoundsInParent());
         mainScene.setCamera(camera);
 //        camera.setTranslateY(camera.getTranslateY0);
-        Player pl1 = new Player(Color.HOTPINK);
-        Circle ball = pl1.getBall();
+
 
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
             @Override
@@ -48,13 +50,13 @@ public class Gameplay {
                 pl1.handleJumpEvent();
             }
         };
-        MainRoot.getChildren().add(ball);
         mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
-        pl1.getAnimation().play();
 
+        pl1.getAnimation().play();
         obs.getAnimation().play();
         obs2.getAnimation().play();
         plus0.getAnimation().play();
+        star.getAnimation().play();
     }
 
     public Scene getMainScene() {

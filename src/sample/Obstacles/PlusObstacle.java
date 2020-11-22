@@ -50,7 +50,6 @@ public class PlusObstacle {
         //setting Rectangle as the node onto which the
 // transition will be applied
         animation.setNode(root);
-        //playing the transition
 
     }
 
