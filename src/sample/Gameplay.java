@@ -3,10 +3,13 @@ package sample;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -41,23 +44,30 @@ public class Gameplay {
         pause.setTranslateY(y);
         return pause;
     }
+
     Node makeStarCount() {
         Star StarImage = new Star(350,40,Color.GREEN,1.1);
         return StarImage.getRoot();
     }
-        int center = 200;
-    Gameplay (int height, double ratio) {
 
+    EventHandler<KeyEvent> eventHandler;
+
+    Group initiateTestObstacles () {
         CircleObstacle obs = new CircleObstacle(60,-1,10,center,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,center,-100);
         Star star = new Star(center, 200,Color.RED,1.1);
         PlusObstacle plus0 = new PlusObstacle(60,1,10,center,-400);
         PlusObstacle plus1 = new PlusObstacle(60,1,10,center,-700);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1000);
-        Player pl1 = new Player(Color.HOTPINK,center,600);
-        Circle ball = pl1.getBall();
 
-        Group MainRoot = new Group();
+        obs.getAnimation().play();
+        obs2.getAnimation().play();
+        plus0.getAnimation().play();
+        plus1.getAnimation().play();
+        star.getAnimation().play();
+
+
+
         Group ObstaclesRoot = new Group();
         ObstaclesRoot.getChildren().add(obs2.getRoot());
         ObstaclesRoot.getChildren().add(obs.getRoot());
@@ -65,7 +75,31 @@ public class Gameplay {
         ObstaclesRoot.getChildren().add(star.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
-        ObstaclesRoot.getChildren().add(ball);
+        return ObstaclesRoot;
+    }
+
+    Player initiatePlayer () {
+        Player pl1 = new Player(Color.HOTPINK,center,600);
+        Circle ball = pl1.getBall();
+        eventHandler = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
+                pl1.handleJumpEvent();
+            }
+        };
+        pl1.getAnimation().play();
+        return pl1;
+    }
+
+    int center = 200;
+
+    Gameplay (int height, double ratio) {
+        Group ObstaclesRoot = initiateTestObstacles();
+        Player pl = initiatePlayer();
+
+        ObstaclesRoot.getChildren().add(pl.getBall());
+        Group MainRoot = new Group();
 
         MainRoot.getChildren().add(makePauseButton(-230,-240));
         MainRoot.getChildren().add(makeStarCount());
@@ -74,51 +108,35 @@ public class Gameplay {
         TranslateTransition tt = new TranslateTransition(Duration.millis(5000), ObstaclesRoot);
         tt.setByY(1200f);
         tt.setCycleCount(1);
-
-//        tt.setAutoReverse(true);
+        tt.setInterpolator(Interpolator.LINEAR);
         tt.pause();
 
         mainScene =new Scene(MainRoot, height*ratio, height);
         PerspectiveCamera camera = new PerspectiveCamera();
-//        camera.setTranslateZ(-1000);
-//        camera.setNearClip(0.1);
-//        camera.setRotate(45);
-//        camera.setFarClip(2000);
-//        camera.setFieldOfView(45);
-//        System.out.println(root.getBoundsInParent());
+
         mainScene.setCamera(camera);
-//        camera.setTranslateY(camera.getTranslateY0);
 
-
-        EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent e) {
-                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
-                pl1.handleJumpEvent();
-            }
-        };
         mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
 
-        Timeline fiveSecondsWonder = new Timeline(
-                new KeyFrame(Duration.millis(200),
+        Timeline gameLoop = new Timeline(
+                new KeyFrame(Duration.millis(41),
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                double yPos =  ball.getTranslateY()+ ObstaclesRoot.getTranslateY();
-                                System.out.println(yPos);
-                                if (yPos < -500) tt.play();
+                                double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
+                                //System.out.println(yPos);
+                                if (yPos < -350) tt.play();
                                 else tt.pause();
+
+                                for (Node node : ObstaclesRoot.getChildren() ){
+                                    if (node == pl.getBall()) continue;
+                                    // detecting collision goes here.
+                                }
                             }
                         }));
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.play();
 
-        pl1.getAnimation().play();
-        obs.getAnimation().play();
-        obs2.getAnimation().play();
-        plus0.getAnimation().play();
-        plus1.getAnimation().play();
-        star.getAnimation().play();
 
         mainScene.setFill(Color.web("272727"));
     }
