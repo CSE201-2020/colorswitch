@@ -9,11 +9,14 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 
-public class Star {
+public class Star extends GameElement{
     final private Group root;
     final private ScaleTransition animation;
     final private int offset = 10;
-    Star(int posX, int posY,Color color, double initialScale) {
+
+    int inactivityCycleCount = 450;
+
+    Star(int posX, int posY, Color color, double initialScale) {
         root = new Group();
         //svg for star
 
@@ -30,7 +33,7 @@ public class Star {
         animation = new ScaleTransition(Duration.millis(1000), star);
         animation.setByX(0.4f);
         animation.setByY(0.4f);
-        animation.setCycleCount(450);
+        animation.setCycleCount(inactivityCycleCount);
         animation.setAutoReverse(true);
 
     }

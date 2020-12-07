@@ -34,7 +34,7 @@ public class Player {
 
         //Setting duration of the transition
         this.animation.setByY(200f);
-        this.animation.setCycleCount(4);
+        this.animation.setCycleCount(1);
         //animation.setAutoReverse(true);
         this.animation.setInterpolator(interpolator);
         //animation.play();

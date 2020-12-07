@@ -14,10 +14,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.Obstacle;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 public class CircleObstacle extends Obstacle {
     final private Group root;
     final private RotateTransition animation;
-    final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
+    final private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")));
     public CircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
         // Creating Circle
         root = new Group();
@@ -26,7 +31,52 @@ public class CircleObstacle extends Obstacle {
         for (int i = 0 ;i < 4; ++i) {
             Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
 
-            rect.setStroke(colors[i]);
+            rect.setStroke(colors.get(i));
+            rect.setFill(Color.web("#272727"));
+            rect.setStrokeWidth(thickness);
+            root.getChildren().add(rect);
+
+        }
+
+        //Instantiating RotateTransition class
+        animation = new RotateTransition();
+
+        //Setting Axis of rotation
+        animation.setAxis(Rotate.Z_AXIS);
+
+        // setting the angle of rotation
+        animation.setByAngle(direction>0? 360 :-360);
+
+        //setting cycle count of the rotation
+        animation.setCycleCount(450);
+
+        //Setting duration of the transition
+        animation.setDuration(Duration.millis(2000));
+        animation.setInterpolator(Interpolator.LINEAR);
+
+        //the transition will be auto reversed by setting this to true
+        //rotate.setAutoReverse(true);
+
+        //setting Rectangle as the node onto which the
+// transition will be applied
+        animation.setNode(root);
+        //playing the transition
+
+    }
+
+    public CircleObstacle(int radius, int direction, int thickness, int posX, int posY, boolean partOf2) {
+        // Creating Circle
+        root = new Group();
+        int deg = 0;
+
+        if (partOf2) {
+            Collections.reverse(colors);
+            Collections.rotate(colors,2);
+        }
+        for (int i = 0 ;i < 4; ++i) {
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
+
+            rect.setStroke(colors.get(i));
             rect.setFill(Color.web("#272727"));
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);

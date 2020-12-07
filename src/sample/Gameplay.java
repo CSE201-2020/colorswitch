@@ -3,13 +3,17 @@ package sample;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
@@ -18,14 +22,49 @@ import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 public class Gameplay {
-    private Scene mainScene;
-    final private ArrayList<Obstacle> ObstacleList = new ArrayList<Obstacle>();
+    ObstacleFactory Factory ;
+    Random rand = new Random();
+    final int presetLength = 5;
+    int currentPos = -1200 ;
 
-    void addNewObstacles() {
-        Obstacle random = new CircleObstacle(60,-1,10,100,200);
-        ObstacleList.add(random);
+    private Scene mainScene;
+    Queue<GameElement> obstacles= new LinkedList<>();
+    Group ObstaclesRoot;
+
+
+    void addNewObstacles(int posY) {
+        int preset = rand.nextInt(presetLength);
+//        preset = 4;
+        ArrayList<Obstacle> NEW = ObstacleFactory.CreateRandomObstacle(preset, posY);
+        int NEW_LENGTH = NEW.size();
+        // gotta delete NEW_LENGTH from queue to save memory.
+        for (int i =0;i< NEW_LENGTH;i++)obstacles.poll();
+        for (Obstacle obx: NEW) {
+            obstacles.add(obx);
+            ObstaclesRoot.getChildren().add(obx.getRoot());
+            obx.getAnimation().play();
+        }
+    }
+
+    void handleCollisions(Player  pl) {
+
+        // death , adding stars and  colour changing.
+        for (GameElement node : obstacles ){
+            // detecting collision goes here.
+            if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
+                if (node.getClass().getName().equals("sample.Obstacles"))System.out.print("circle ");
+                if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
+                if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle"))System.out.print("PO ");
+                if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle"))System.out.print("HL ");
+                System.out.println("detected");
+            }
+
+        }
     }
 
     Node makePauseButton(int x, int y) {
@@ -41,23 +80,36 @@ public class Gameplay {
         pause.setTranslateY(y);
         return pause;
     }
-    Node makeStarCount() {
-        Star StarImage = new Star(350,40,Color.GREEN,1.1);
+
+    Node makeStarCount(int x,int y) {
+        Star StarImage = new Star(x,y,Color.GREEN,1.1);
         return StarImage.getRoot();
     }
-        int center = 200;
-    Gameplay (int height, double ratio) {
 
+    EventHandler<KeyEvent> eventHandler;
+
+    Group initiateTestObstacles () {
         CircleObstacle obs = new CircleObstacle(60,-1,10,center,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,center,-100);
         Star star = new Star(center, 200,Color.RED,1.1);
-        PlusObstacle plus0 = new PlusObstacle(60,1,10,center,-400);
-        PlusObstacle plus1 = new PlusObstacle(60,1,10,center,-700);
+        PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-400);
+        PlusObstacle plus1 = new PlusObstacle(60,1,10,center - 60 ,-700);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1000);
-        Player pl1 = new Player(Color.HOTPINK,center,600);
-        Circle ball = pl1.getBall();
 
-        Group MainRoot = new Group();
+        obs.getAnimation().play();
+        obs2.getAnimation().play();
+        plus0.getAnimation().play();
+        plus1.getAnimation().play();
+        star.getAnimation().play();
+
+        obstacles.add(obs);
+        obstacles.add(obs2);
+        obstacles.add(star);
+        obstacles.add(plus0);
+        obstacles.add(plus1);
+        obstacles.add(hor0);
+
+
         Group ObstaclesRoot = new Group();
         ObstaclesRoot.getChildren().add(obs2.getRoot());
         ObstaclesRoot.getChildren().add(obs.getRoot());
@@ -65,61 +117,64 @@ public class Gameplay {
         ObstaclesRoot.getChildren().add(star.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
-        ObstaclesRoot.getChildren().add(ball);
+        return ObstaclesRoot;
+    }
 
-        MainRoot.getChildren().add(makePauseButton(-230,-240));
-        MainRoot.getChildren().add(makeStarCount());
-        MainRoot.getChildren().add(ObstaclesRoot);
-      
-        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), ObstaclesRoot);
-        tt.setByY(1200f);
-        tt.setCycleCount(1);
-
-//        tt.setAutoReverse(true);
-        tt.pause();
-
-        mainScene =new Scene(MainRoot, height*ratio, height);
-        PerspectiveCamera camera = new PerspectiveCamera();
-//        camera.setTranslateZ(-1000);
-//        camera.setNearClip(0.1);
-//        camera.setRotate(45);
-//        camera.setFarClip(2000);
-//        camera.setFieldOfView(45);
-//        System.out.println(root.getBoundsInParent());
-        mainScene.setCamera(camera);
-//        camera.setTranslateY(camera.getTranslateY0);
-
-
-        EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
+    Player initiatePlayer () {
+        Player pl1 = new Player(Color.HOTPINK,center,600);
+        Circle ball = pl1.getBall();
+        eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
+//                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
                 pl1.handleJumpEvent();
             }
         };
+        pl1.getAnimation().play();
+        return pl1;
+    }
+
+    int center = 200;
+
+    Gameplay (int height, double ratio) {
+        ObstaclesRoot = initiateTestObstacles();
+        Player pl = initiatePlayer();
+
+        ObstaclesRoot.getChildren().add(pl.getBall());
+        Group MainRoot = new Group();
+
+        MainRoot.getChildren().add(makePauseButton(-230,-240));
+        MainRoot.getChildren().add(makeStarCount(350,40));
+        MainRoot.getChildren().add(ObstaclesRoot);
+
+        double speed = (1200)/(6000.0);
+        float dist = 1200f;
+        TranslateTransition tt = new TranslateTransition(Duration.millis(dist/speed), ObstaclesRoot);
+        tt.setByY(dist);
+        tt.setCycleCount(1);
+        tt.setInterpolator(Interpolator.LINEAR);
+
+        mainScene =new Scene(MainRoot, height*ratio, height);
+
         mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
 
-        Timeline fiveSecondsWonder = new Timeline(
-                new KeyFrame(Duration.millis(200),
+        Timeline gameLoop = new Timeline(
+                new KeyFrame(Duration.millis(16),  // could be improved for performance
+
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                double yPos =  ball.getTranslateY()+ ObstaclesRoot.getTranslateY();
-                                System.out.println(yPos);
-                                if (yPos < -500) tt.play();
+                                double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
+                                if (yPos < -350) tt.play();
                                 else tt.pause();
+
+                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);
+
+                                handleCollisions(pl);
                             }
                         }));
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
-
-        pl1.getAnimation().play();
-        obs.getAnimation().play();
-        obs2.getAnimation().play();
-        plus0.getAnimation().play();
-        plus1.getAnimation().play();
-        star.getAnimation().play();
-
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.play();
         mainScene.setFill(Color.web("272727"));
     }
 

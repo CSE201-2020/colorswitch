@@ -17,7 +17,7 @@ import sample.Obstacles.CircleObstacle;
 
 public class  Main extends Application {
     final private int height = 700 ;
-    final private double ratio = (9/16.0) ;
+    final private double ratio = (4/7.0) ;
 
 
     @Override
