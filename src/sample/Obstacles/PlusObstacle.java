@@ -8,8 +8,9 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import sample.Obstacle;
 
-public class PlusObstacle {
+public class PlusObstacle extends Obstacle {
     final private Group root;
     final private RotateTransition animation;
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};

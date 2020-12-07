@@ -13,6 +13,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
@@ -21,14 +22,49 @@ import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 public class Gameplay {
-    private Scene mainScene;
-    final private ArrayList<Obstacle> ObstacleList = new ArrayList<Obstacle>();
+    ObstacleFactory Factory ;
+    Random rand = new Random();
+    final int presetLength = 5;
+    int currentPos = -1200 ;
 
-    void addNewObstacles() {
-        Obstacle random = new CircleObstacle(60,-1,10,100,200);
-        ObstacleList.add(random);
+    private Scene mainScene;
+    Queue<GameElement> obstacles= new LinkedList<>();
+    Group ObstaclesRoot;
+
+
+    void addNewObstacles(int posY) {
+        int preset = rand.nextInt(presetLength);
+//        preset = 4;
+        ArrayList<Obstacle> NEW = ObstacleFactory.CreateRandomObstacle(preset, posY);
+        int NEW_LENGTH = NEW.size();
+        // gotta delete NEW_LENGTH from queue to save memory.
+        for (int i =0;i< NEW_LENGTH;i++)obstacles.poll();
+        for (Obstacle obx: NEW) {
+            obstacles.add(obx);
+            ObstaclesRoot.getChildren().add(obx.getRoot());
+            obx.getAnimation().play();
+        }
+    }
+
+    void handleCollisions(Player  pl) {
+
+        // death , adding stars and  colour changing.
+        for (GameElement node : obstacles ){
+            // detecting collision goes here.
+            if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
+                if (node.getClass().getName().equals("sample.Obstacles"))System.out.print("circle ");
+                if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
+                if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle"))System.out.print("PO ");
+                if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle"))System.out.print("HL ");
+                System.out.println("detected");
+            }
+
+        }
     }
 
     Node makePauseButton(int x, int y) {
@@ -45,8 +81,8 @@ public class Gameplay {
         return pause;
     }
 
-    Node makeStarCount() {
-        Star StarImage = new Star(350,40,Color.GREEN,1.1);
+    Node makeStarCount(int x,int y) {
+        Star StarImage = new Star(x,y,Color.GREEN,1.1);
         return StarImage.getRoot();
     }
 
@@ -56,8 +92,8 @@ public class Gameplay {
         CircleObstacle obs = new CircleObstacle(60,-1,10,center,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,center,-100);
         Star star = new Star(center, 200,Color.RED,1.1);
-        PlusObstacle plus0 = new PlusObstacle(60,1,10,center,-400);
-        PlusObstacle plus1 = new PlusObstacle(60,1,10,center,-700);
+        PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-400);
+        PlusObstacle plus1 = new PlusObstacle(60,1,10,center - 60 ,-700);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1000);
 
         obs.getAnimation().play();
@@ -66,6 +102,12 @@ public class Gameplay {
         plus1.getAnimation().play();
         star.getAnimation().play();
 
+        obstacles.add(obs);
+        obstacles.add(obs2);
+        obstacles.add(star);
+        obstacles.add(plus0);
+        obstacles.add(plus1);
+        obstacles.add(hor0);
 
 
         Group ObstaclesRoot = new Group();
@@ -84,7 +126,7 @@ public class Gameplay {
         eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent e) {
-                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
+//                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
                 pl1.handleJumpEvent();
             }
         };
@@ -95,49 +137,44 @@ public class Gameplay {
     int center = 200;
 
     Gameplay (int height, double ratio) {
-        Group ObstaclesRoot = initiateTestObstacles();
+        ObstaclesRoot = initiateTestObstacles();
         Player pl = initiatePlayer();
 
         ObstaclesRoot.getChildren().add(pl.getBall());
         Group MainRoot = new Group();
 
         MainRoot.getChildren().add(makePauseButton(-230,-240));
-        MainRoot.getChildren().add(makeStarCount());
+        MainRoot.getChildren().add(makeStarCount(350,40));
         MainRoot.getChildren().add(ObstaclesRoot);
-      
-        TranslateTransition tt = new TranslateTransition(Duration.millis(5000), ObstaclesRoot);
-        tt.setByY(1200f);
+
+        double speed = (1200)/(6000.0);
+        float dist = 1200f;
+        TranslateTransition tt = new TranslateTransition(Duration.millis(dist/speed), ObstaclesRoot);
+        tt.setByY(dist);
         tt.setCycleCount(1);
         tt.setInterpolator(Interpolator.LINEAR);
-        tt.pause();
 
         mainScene =new Scene(MainRoot, height*ratio, height);
-        PerspectiveCamera camera = new PerspectiveCamera();
-
-        mainScene.setCamera(camera);
 
         mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
 
         Timeline gameLoop = new Timeline(
-                new KeyFrame(Duration.millis(41),
+                new KeyFrame(Duration.millis(16),  // could be improved for performance
+
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
                                 double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
-                                //System.out.println(yPos);
                                 if (yPos < -350) tt.play();
                                 else tt.pause();
 
-                                for (Node node : ObstaclesRoot.getChildren() ){
-                                    if (node == pl.getBall()) continue;
-                                    // detecting collision goes here.
-                                }
+                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);
+
+                                handleCollisions(pl);
                             }
                         }));
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
-
-
         mainScene.setFill(Color.web("272727"));
     }
 
