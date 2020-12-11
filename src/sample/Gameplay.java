@@ -21,17 +21,18 @@ import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-public class Gameplay {
+public class Gameplay implements Serializable {
     ObstacleFactory Factory ;
     Random rand = new Random();
     final int presetLength = 5;
     int currentPos = -1200 ;
-
+    Player pl;
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
@@ -138,7 +139,7 @@ public class Gameplay {
 
     Gameplay (int height, double ratio) {
         ObstaclesRoot = initiateTestObstacles();
-        Player pl = initiatePlayer();
+         pl = initiatePlayer();
 
         ObstaclesRoot.getChildren().add(pl.getBall());
         Group MainRoot = new Group();
@@ -165,7 +166,7 @@ public class Gameplay {
                             @Override
                             public void handle(ActionEvent event) {
                                 double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
-                                if (yPos < -350) tt.play();
+                                if (yPos < -425) tt.play();
                                 else tt.pause();
 
                                 if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);

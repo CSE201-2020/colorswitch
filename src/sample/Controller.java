@@ -29,6 +29,7 @@ public class Controller {
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
         Gameplay gameplay = new Gameplay(700 , 9/(16.0));
+//        gameplay.init(datatable)
         System.out.println(node);
         System.out.println(gameplay);
         System.out.println(stage);
@@ -53,6 +54,6 @@ public class Controller {
         stage.setTitle("gameplay");
         stage.setScene(mainScene);
         stage.show();
-    }
+    } 
 
 }

@@ -18,7 +18,7 @@ public class Player {
     Interpolator interpolator = new Interpolator() {
         @Override
         protected double curve(double t) {
-            return -t*3 * (1 - 3*t);
+            return -t*2 * (1 - 3*t);
         }
 
     };
@@ -33,7 +33,7 @@ public class Player {
         this.animation = new TranslateTransition(Duration.millis(2000), ball);
 
         //Setting duration of the transition
-        this.animation.setByY(200f);
+        this.animation.setByY(400f);
         this.animation.setCycleCount(1);
         //animation.setAutoReverse(true);
         this.animation.setInterpolator(interpolator);
