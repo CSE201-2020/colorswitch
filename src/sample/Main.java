@@ -29,8 +29,8 @@ public class  Main extends Application {
         AnchorPane root = FXMLLoader.load(getClass().getResource("login.fxml"));
         System.out.println("Enter Username : ");
         Scanner sc= new Scanner(System.in);
-        String s=sc.next();
-        currentd.setUsername(s);
+//        String s=sc.next();
+        currentd.setUsername("Bhavesh");
         currentd.setTotalstars(100);
         serialize();
         deserialize();

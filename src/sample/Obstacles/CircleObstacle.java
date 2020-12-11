@@ -31,7 +31,7 @@ public class CircleObstacle extends Obstacle {
         int deg = 0;
 
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,radius,radius,90*i,20);
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,80);
             rect.setType(ArcType.OPEN);
             rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setStroke(colors.get(i));

@@ -9,13 +9,16 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
@@ -36,8 +39,57 @@ public class Gameplay implements Serializable {
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
+    int center = 200;
+    Label score;
+    int curscore=0;
 
+    Gameplay (int height, double ratio) {
+        ObstaclesRoot = initiateTestObstacles();
+        pl = initiatePlayer();
 
+        ObstaclesRoot.getChildren().add(pl.getBall());
+        Group MainRoot = new Group();
+        score = new Label("0");
+        score.setFont(Font.font("Bookshelf Symbol 7",40));
+        score.setTextFill(Paint.valueOf("#fff9f9"));
+        score.setTranslateY(5);
+        MainRoot.getChildren().add(makePauseButton(80,-250));
+        MainRoot.getChildren().add(makeStarCount(50,25));
+        MainRoot.getChildren().add(score);
+
+        MainRoot.getChildren().add(ObstaclesRoot);
+
+        double speed = (1200)/(6000.0);
+        float dist = 1200f;
+        TranslateTransition tt = new TranslateTransition(Duration.millis(dist/speed), ObstaclesRoot);
+        tt.setByY(dist);
+        tt.setCycleCount(1);
+        tt.setInterpolator(Interpolator.LINEAR);
+
+        mainScene =new Scene(MainRoot, height*ratio, height);
+
+        mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
+
+        Timeline gameLoop = new Timeline(
+                new KeyFrame(Duration.millis(16),  // could be improved for performance
+
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
+                                //postion of ball from top of screen .
+                                if (yPos < -425) tt.play();
+                                else tt.pause();
+                                if(yPos > -10) pl.getAnimation().pause();
+                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);
+
+                                handleCollisions(pl);
+                            }
+                        }));
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.play();
+        mainScene.setFill(Color.web("272727"));
+    }
     void addNewObstacles(int posY) {
         int preset = rand.nextInt(presetLength);
 //        preset = 4;
@@ -59,7 +111,12 @@ public class Gameplay implements Serializable {
             // detecting collision goes here.
             if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
                 if (node.getClass().getName().equals("sample.Obstacles"))System.out.print("circle ");
-                if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
+                if (node.getClass().getName().equals("sample.Star")){
+                    System.out.print("Star ");
+                    curscore++;
+                    String s= "" +curscore;
+                    score.setText(s);
+                }
                 if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle"))System.out.print("PO ");
                 if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle"))System.out.print("HL ");
                 System.out.println("detected");
@@ -73,7 +130,7 @@ public class Gameplay implements Serializable {
         SVGPath pause = new SVGPath();
 
         pause.setContent(svg);
-        pause.setFill(Color.GREEN);
+        pause.setFill(Color.LIGHTGRAY);
         double ratio = 0.06;
         pause.setScaleY(ratio);
         pause.setScaleX(ratio);
@@ -83,7 +140,9 @@ public class Gameplay implements Serializable {
     }
 
     Node makeStarCount(int x,int y) {
-        Star StarImage = new Star(x,y,Color.GREEN,1.1);
+        Star StarImage = new Star(x,y,Color.LIGHTGRAY,1.1);
+        double ratio = 0.06;
+        StarImage.setScaleStar(1.5,1.5);
         return StarImage.getRoot();
     }
 
@@ -92,7 +151,9 @@ public class Gameplay implements Serializable {
     Group initiateTestObstacles () {
         CircleObstacle obs = new CircleObstacle(60,-1,10,center,200);
         CircleObstacle obs2 = new CircleObstacle(60,1,10,center,-100);
-        Star star = new Star(center, 200,Color.RED,1.1);
+        Star star = new Star(center, 200,Color.LIGHTGRAY,1.1);
+        //This is the star for collection not score.
+        ColorChanger tary= new ColorChanger(center,-220);
         PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-400);
         PlusObstacle plus1 = new PlusObstacle(60,1,10,center - 60 ,-700);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1000);
@@ -109,6 +170,7 @@ public class Gameplay implements Serializable {
         obstacles.add(plus0);
         obstacles.add(plus1);
         obstacles.add(hor0);
+        obstacles.add(tary);
 
 
         Group ObstaclesRoot = new Group();
@@ -118,11 +180,12 @@ public class Gameplay implements Serializable {
         ObstaclesRoot.getChildren().add(star.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
+        ObstaclesRoot.getChildren().add(tary.getRoot());
         return ObstaclesRoot;
     }
 
     Player initiatePlayer () {
-        Player pl1 = new Player(Color.HOTPINK,center,600);
+        Player pl1 = new Player(Color.web("#FF0181"),center,600);
         Circle ball = pl1.getBall();
         eventHandler = new EventHandler<KeyEvent>() {
             @Override
@@ -131,52 +194,8 @@ public class Gameplay implements Serializable {
                 pl1.handleJumpEvent();
             }
         };
-        pl1.getAnimation().play();
+//        pl1.getAnimation().play();
         return pl1;
-    }
-
-    int center = 200;
-
-    Gameplay (int height, double ratio) {
-        ObstaclesRoot = initiateTestObstacles();
-         pl = initiatePlayer();
-
-        ObstaclesRoot.getChildren().add(pl.getBall());
-        Group MainRoot = new Group();
-
-        MainRoot.getChildren().add(makePauseButton(-230,-240));
-        MainRoot.getChildren().add(makeStarCount(350,40));
-        MainRoot.getChildren().add(ObstaclesRoot);
-
-        double speed = (1200)/(6000.0);
-        float dist = 1200f;
-        TranslateTransition tt = new TranslateTransition(Duration.millis(dist/speed), ObstaclesRoot);
-        tt.setByY(dist);
-        tt.setCycleCount(1);
-        tt.setInterpolator(Interpolator.LINEAR);
-
-        mainScene =new Scene(MainRoot, height*ratio, height);
-
-        mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
-
-        Timeline gameLoop = new Timeline(
-                new KeyFrame(Duration.millis(16),  // could be improved for performance
-
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent event) {
-                                double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
-                                if (yPos < -425) tt.play();
-                                else tt.pause();
-
-                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);
-
-                                handleCollisions(pl);
-                            }
-                        }));
-        gameLoop.setCycleCount(Timeline.INDEFINITE);
-        gameLoop.play();
-        mainScene.setFill(Color.web("272727"));
     }
 
     public Scene getMainScene() {

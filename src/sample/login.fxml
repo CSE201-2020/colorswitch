@@ -55,7 +55,7 @@
             <Font name="Calibri Bold" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="237.0" layoutY="499.0" mnemonicParsing="false" onAction="#loadmenu" prefHeight="34.0" prefWidth="63.0" style="-fx-background-color: #42e3c5; -fx-background-radius: 15px 5px;" text="Select">
+      <Button layoutX="237.0" layoutY="499.0" mnemonicParsing="false" onAction="#loadmenu" prefHeight="34.0" prefWidth="63.0" style="-fx-background-color: #42e3c5; -fx-background-radius: 15px 5px;" text="Select" textOverrun="CLIP">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font></Button>
