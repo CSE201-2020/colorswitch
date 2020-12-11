@@ -4,11 +4,13 @@ import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import sample.Obstacle;
+import sample.Player;
 
 public class DoubleCircleObstacle extends Obstacle {
     int center = 200;
@@ -37,6 +39,9 @@ public class DoubleCircleObstacle extends Obstacle {
         return animation;
     }
 
+    public int checkCollision(Player player) {
+        return 0;
+    }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {
 //        // TODO Auto-generated method stub

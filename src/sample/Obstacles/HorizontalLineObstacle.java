@@ -7,6 +7,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -15,6 +16,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.Obstacle;
+import sample.Player;
 
 public class HorizontalLineObstacle extends Obstacle {
     final private Group root;
@@ -54,6 +56,15 @@ public class HorizontalLineObstacle extends Obstacle {
         return animation;
     }
 
+    public int checkCollision(Player player) {
+//        System.out.println(this.root.getBoundsInParent());
+        for (Node obPart: this.root.getChildren()) {
+            if (player.getBall().intersects(obPart.getBoundsInParent())) {
+
+            }
+        }
+        return 0;
+    }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {
 //        // TODO Auto-generated method stub

@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.SVGPath;
@@ -44,5 +45,9 @@ public class Star extends GameElement{
 
     public ScaleTransition getAnimation() {
         return animation;
+    }
+
+    public int checkCollision(Player player) {
+        return 0;
     }
 }
