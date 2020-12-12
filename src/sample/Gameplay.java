@@ -24,6 +24,7 @@ import javafx.util.Duration;
 import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
+import sample.Obstacles.CircleThingy;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ public class Gameplay {
     ObstacleFactory Factory ;
     Random rand = new Random();
     final int presetLength = 5;
-    int currentPos = -1200 ;
+    int currentPos = -1600 ;
 
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
@@ -74,14 +75,18 @@ public class Gameplay {
             if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
                 if (node.getClass().getName().equals("sample.Obstacles.CircleObstacle")) {
 //                    System.out.print("circle ");
-                    node.checkCollision(pl);
+//                    node.checkCollision(pl);
                 }
                 if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
                 if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle")){
 //                    System.out.print("PO ");
-                    node.checkCollision(pl);
+//                    node.checkCollision(pl);
                 }
                 if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle")){
+//                    System.out.print("HL ");
+//                    node.checkCollision(pl);
+                }
+                if (node.getClass().getName().equals("sample.Obstacles.CircleThingy")){
 //                    System.out.print("HL ");
                     node.checkCollision(pl);
                 }
@@ -119,12 +124,14 @@ public class Gameplay {
         PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-600);
         PlusObstacle plus1 = new PlusObstacle(120,1,20,center - 120 ,-1000);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1200);
+        CircleThingy test = new CircleThingy(15,1,center,-1600,2);
 
         obs.getAnimation().play();
         obs2.getAnimation().play();
         plus0.getAnimation().play();
         plus1.getAnimation().play();
         star.getAnimation().play();
+        test.getAnimation().play();
 
         obstacles.add(obs);
         obstacles.add(obs2);
@@ -132,6 +139,7 @@ public class Gameplay {
         obstacles.add(plus0);
         obstacles.add(plus1);
         obstacles.add(hor0);
+        obstacles.add(test);
 
 
         Group ObstaclesRoot = new Group();
@@ -141,6 +149,7 @@ public class Gameplay {
         ObstaclesRoot.getChildren().add(star.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
+        ObstaclesRoot.getChildren().add(test.getRoot());
         return ObstaclesRoot;
     }
 
