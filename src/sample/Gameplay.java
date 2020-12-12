@@ -113,6 +113,8 @@ public class Gameplay implements Serializable {
                 if (node.getClass().getName().equals("sample.Obstacles"))System.out.print("circle ");
                 if (node.getClass().getName().equals("sample.Star")){
                     System.out.print("Star ");
+                    ObstaclesRoot.getChildren().remove(node.getRoot());
+                    obstacles.remove(node);
                     curscore++;
                     String s= "" +curscore;
                     score.setText(s);
