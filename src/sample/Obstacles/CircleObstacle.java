@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -29,12 +31,14 @@ public class CircleObstacle extends Obstacle {
         int deg = 0;
 
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
-
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,80);
+            rect.setType(ArcType.OPEN);
+            rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setStroke(colors.get(i));
-            rect.setFill(Color.web("#272727"));
+            rect.setFill(Color.TRANSPARENT);
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
+
 
         }
 
@@ -74,10 +78,11 @@ public class CircleObstacle extends Obstacle {
             Collections.rotate(colors,2);
         }
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
-
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,10);
+            rect.setType(ArcType.OPEN);
+            rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setStroke(colors.get(i));
-            rect.setFill(Color.web("#272727"));
+            rect.setFill(Color.TRANSPARENT);
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
 
