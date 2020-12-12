@@ -28,6 +28,7 @@ public class CircleThingy extends Obstacle {
         int N_per_SIDE = 5;
         int SIDE = 3;
         ArrayList<Double> points = new ArrayList<>();
+        SVGPath svg = new SVGPath();
         switch (type) {
             case 0:
                 // Triangle
@@ -67,8 +68,19 @@ public class CircleThingy extends Obstacle {
                 break;
             case 3:
                 // infinity-shaped
+                SIDE = 4;
+                svg.setFill(Color.TRANSPARENT);
+//                svg.setStrokeWidth(1.0);
+//                svg.setStroke(Color.BLACK);
+                svg.setContent("M 787.49,150 C 787.49,203.36 755.56,247.27 712.27,269.5 S 622.17,290.34 582.67,279.16 508.78,246.56 480,223.91 424.93,174.93 400,150 348.85,98.79 320,76.09 256.91,32.03 217.33,20.84 130.62,8.48 87.73,30.5 12.51,96.64 12.51,150 44.44,247.27 87.73,269.5 177.83,290.34 217.33,279.16 291.22,246.56 320,223.91 375.07,174.93 400,150 451.15,98.79 480,76.09 543.09,32.03 582.67,20.84 669.38,8.48 712.27,30.5 787.49,96.64 787.49,150 z");
+                System.out.println(svg.getBoundsInLocal());
+                svg.setTranslateX(-200);
+                svg.setScaleX(0.3);
+                svg.setScaleY(0.3);
+                svg.setTranslateY(-1000);
                 break;
         }
+
 
         if (direction<0) Collections.reverse(points);
         Polygon path = new Polygon();
@@ -80,13 +92,13 @@ public class CircleThingy extends Obstacle {
         int mod = N_CIRCLE / 4;
         for (int i =0 ; i < N_CIRCLE ; i++) {
             Circle unitCircle = new Circle(posX, posY, radius);
-            unitCircle.setFill(colors[i/mod]);
+            unitCircle.setFill(colors[(i/mod)%4]);
 
             PathTransition anim = new PathTransition();
             anim.setDuration(Duration.millis(5000));
             anim.setDelay(Duration.millis(i*5000.0/(N_CIRCLE)));
             anim.setNode(unitCircle);
-            anim.setPath(path);
+            anim.setPath(type==3?svg:path);
             anim.setInterpolator(Interpolator.LINEAR);
 //        animation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
             anim.setCycleCount(1000);

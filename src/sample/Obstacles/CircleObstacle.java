@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.Obstacle;
 import sample.Player;
+import sample.animations.Disintegration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,6 +149,8 @@ public class CircleObstacle extends Obstacle {
                     System.out.print("Different Color");
                     player.getAnimation().pause();
                     this.animation.pause();
+
+                    return -1;
                 }
             }
         }

@@ -25,6 +25,7 @@ import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 import sample.Obstacles.CircleThingy;
+import sample.animations.Disintegration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class Gameplay {
     Random rand = new Random();
     final int presetLength = 5;
     int currentPos = -1600 ;
-
+    boolean disentegrated = false;
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
@@ -73,9 +74,15 @@ public class Gameplay {
         for (GameElement node : obstacles ){
             // detecting collision goes here.
             if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
-                if (node.getClass().getName().equals("sample.Obstacles.CircleObstacle")) {
+                if (node.getClass().getName().equals("sample.Obstacles.CircleObstacle")&& !disentegrated) {
 //                    System.out.print("circle ");
-//                    node.checkCollision(pl);
+                    if (node.checkCollision(pl)<0) {
+                        Disintegration dis =  new Disintegration(pl, 10);
+                        dis.getAnimation().play();
+                        ObstaclesRoot.getChildren().add(dis.getRoot());
+                        disentegrated = true;
+
+                    }
                 }
                 if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
                 if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle")){
@@ -124,7 +131,7 @@ public class Gameplay {
         PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-600);
         PlusObstacle plus1 = new PlusObstacle(120,1,20,center - 120 ,-1000);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1200);
-        CircleThingy test = new CircleThingy(15,1,center,-1600,2);
+        CircleThingy test = new CircleThingy(15,1,center,-1600,3);
 
         obs.getAnimation().play();
         obs2.getAnimation().play();
