@@ -97,6 +97,7 @@ public class CircleThingy extends Obstacle {
             PathTransition anim = new PathTransition();
             anim.setDuration(Duration.millis(5000));
             anim.setDelay(Duration.millis(i*5000.0/(N_CIRCLE)));
+
             anim.setNode(unitCircle);
             anim.setPath(type==3?svg:path);
             anim.setInterpolator(Interpolator.LINEAR);
@@ -125,7 +126,6 @@ public class CircleThingy extends Obstacle {
             if (!arc.getFill().equals(ball.getFill())) {
 //                System.out.print(arc.getStroke()+" "+ball.getFill());
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
-                    System.out.print("Different Color");
                     player.getAnimation().pause();
                     this.animation.pause();
                 }

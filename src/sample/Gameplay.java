@@ -26,6 +26,7 @@ import sample.Obstacles.HorizontalLineObstacle;
 import sample.Obstacles.PlusObstacle;
 import sample.Obstacles.CircleThingy;
 import sample.animations.Disintegration;
+import sample.animations.StarCollected;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -35,15 +36,14 @@ import java.util.Random;
 public class Gameplay {
     ObstacleFactory Factory ;
     Random rand = new Random();
-    final int presetLength = 5;
+    final int presetLength = 7;
     int currentPos = -1600 ;
     boolean disentegrated = false;
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
-    javafx.scene.robot.Robot robot = new Robot();
 
-    void addNewObstacles(int posY) {
+    int addNewObstacles(int posY) {
         int preset = rand.nextInt(presetLength);
 //        preset = 4;
         ArrayList<Obstacle> NEW = ObstacleFactory.CreateRandomObstacle(preset, posY);
@@ -60,6 +60,7 @@ public class Gameplay {
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
         }
+        return NEW_LENGTH;
     }
     int pink = Color.web("ff0181").hashCode();
     int grey = Color.web("272727").hashCode();
@@ -71,36 +72,36 @@ public class Gameplay {
 //        if  (top.hashCode() != pink|| top.hashCode()!= grey )System.out.println("not OK");
 //        System.out.println(pl.+ " " +pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY());
         // death , adding stars and  colour changing.
+
+        GameElement toBeRemoved = null;  // remove star and colorchanger
         for (GameElement node : obstacles ){
             // detecting collision goes here.
-            if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
-                if (node.getClass().getName().equals("sample.Obstacles.CircleObstacle")&& !disentegrated) {
-//                    System.out.print("circle ");
-                    if (node.checkCollision(pl)<0) {
-                        Disintegration dis =  new Disintegration(pl, 10);
-                        dis.getAnimation().play();
-                        ObstaclesRoot.getChildren().add(dis.getRoot());
-                        disentegrated = true;
+            int status = node.checkCollision(pl);
 
-                    }
+            if (status < 0) {
+                if (!disentegrated) {
+//                    System.out.print("circle ");
+                    Disintegration dis =  new Disintegration(pl, 10);
+                    dis.getAnimation().play();
+                    ObstaclesRoot.getChildren().add(dis.getRoot());
+                    disentegrated = true;
+                    System.out.println("detected");
                 }
-                if (node.getClass().getName().equals("sample.Star"))System.out.print("Star ");
-                if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle")){
-//                    System.out.print("PO ");
-//                    node.checkCollision(pl);
-                }
-                if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle")){
-//                    System.out.print("HL ");
-//                    node.checkCollision(pl);
-                }
-                if (node.getClass().getName().equals("sample.Obstacles.CircleThingy")){
-//                    System.out.print("HL ");
-                    node.checkCollision(pl);
-                }
-                System.out.println("detected");
+            }
+            else if (status == 2) {
+                System.out.println("STAR STAR");
+                StarCollected col =  new StarCollected(pl, 5);
+                col.getAnimation().play();
+                ObstaclesRoot.getChildren().add(col.getRoot());
+                ObstaclesRoot.getChildren().remove(node.getRoot());
+                toBeRemoved = node;
+            }
+            else if (status == 3) {
+                //change color
             }
 
         }
+        if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
     }
 
     Node makePauseButton(int x, int y) {
@@ -131,7 +132,7 @@ public class Gameplay {
         PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-600);
         PlusObstacle plus1 = new PlusObstacle(120,1,20,center - 120 ,-1000);
         HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1200);
-        CircleThingy test = new CircleThingy(15,1,center,-1600,3);
+        CircleThingy test = new CircleThingy(15,1,center,-1600,0);
 
         obs.getAnimation().play();
         obs2.getAnimation().play();
@@ -208,7 +209,10 @@ public class Gameplay {
                                 if (yPos < -350) tt.play();
                                 else tt.pause();
 
-                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 400);
+                                if (pl.getBall().getTranslateY() < currentPos) {
+                                    System.out.println(pl.getBall().getTranslateY());
+                                    currentPos -= addNewObstacles(currentPos) * 300;
+                                }
                                 pl.getBall().toFront();
                                 handleCollisions(pl);
                             }

@@ -144,9 +144,7 @@ public class CircleObstacle extends Obstacle {
         for (Arc arc : this.arcArrayList){
             Shape intersected = Shape.intersect(arc,ball);
             if (!arc.getStroke().equals(ball.getFill())) {
-//                System.out.print(arc.getStroke()+" "+ball.getFill());
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
-                    System.out.print("Different Color");
                     player.getAnimation().pause();
                     this.animation.pause();
 
