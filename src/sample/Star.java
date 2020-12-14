@@ -2,6 +2,7 @@ package sample;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
@@ -45,5 +46,10 @@ public class Star extends GameElement{
 
     public ScaleTransition getAnimation() {
         return animation;
+    }
+
+    public int checkCollision(Player player) {
+        if (this.root.intersects(player.getBall().getBoundsInParent())) return 2;
+        return 0;
     }
 }

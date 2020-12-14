@@ -1,10 +1,7 @@
 package sample;
 
 import javafx.geometry.Pos;
-import sample.Obstacles.CircleObstacle;
-import sample.Obstacles.DoubleCircleObstacle;
-import sample.Obstacles.HorizontalLineObstacle;
-import sample.Obstacles.PlusObstacle;
+import sample.Obstacles.*;
 
 import java.util.ArrayList;
 public class ObstacleFactory {
@@ -26,18 +23,32 @@ public class ObstacleFactory {
         switch (preset) {
             case 0:
                 OBS.add(new CircleObstacle(60, -1,10, center, PosY));
+                OBS.add(new CircleObstacle(60, 1,10, center, PosY - 400));
+                System.out.println(" 1 -1");
                 break;
             case 1:
                 OBS.add(new PlusObstacle(60,1,10,center + 60, PosY));
+                System.out.println("small plus");
                 break;
             case 2:
+                OBS.add(new CircleThingy(10,1,center,PosY,0));
+                System.out.println("Circle Thingy 0");
                 break;
             case 3:
+                OBS.add(new CircleThingy(15,1,center,PosY,2));
+                System.out.println("Circle Thingy 2");
                 break;
             case 4:
-                OBS.add(new DoubleCircleObstacle(60,1,10,center,PosY));
+                OBS.add(new CircleThingy(15,1,center,PosY,1));
+                System.out.println("Circle Thingy 1");
                 break;
             case 5:
+                OBS.add(new DoubleCircleObstacle(60,1,10,center,PosY));
+                System.out.println("Double Circle");
+                break;
+            case 6:
+                OBS.add(new PlusObstacle(120,1,10,center + 120 ,PosY));
+                System.out.println("Big plus");
                 break;
         }
         return OBS;

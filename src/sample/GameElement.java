@@ -7,11 +7,10 @@ import javafx.scene.Node;
 
 public abstract class GameElement {
     private Node element;
-    public boolean checkCollision (Node element2){
-        return (element2.getBoundsInParent()) . intersects(element.getBoundsInParent());
-    }
     abstract public Group getRoot();
     abstract public Transition getAnimation();
+    // 0:sameColor, -1:different color, 1:star, 2:colorChanger
+    abstract public int checkCollision(Player player);
     //add abstract functions here ...
     //1) getColor
     //2) maybe checkCollision also.
