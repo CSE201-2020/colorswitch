@@ -1,9 +1,6 @@
 package sample.Obstacles;
 
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.Transition;
+import javafx.animation.*;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -11,18 +8,24 @@ import javafx.util.Duration;
 import sample.Obstacle;
 import sample.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class CircleThingy extends Obstacle {
     final private Group root = new Group();
     final private ParallelTransition animation ;
     final private ArrayList<Circle> circleArrayList = new ArrayList<>();
-
+    private Timer timer ;
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
-
+    class delayTask extends TimerTask {
+        @Override
+        public void run() {
+            animation.setRate(1);
+        }
+    }
+    public void taskMaker (int seconds) {
+        timer = new Timer();
+        timer.schedule(new delayTask(), seconds * 1000);
+    }
     public CircleThingy (int radius, int direction, int posX, int posY, int type) {
 
         int N_per_SIDE = 5;
@@ -102,13 +105,14 @@ public class CircleThingy extends Obstacle {
             anim.setPath(type==3?svg:path);
             anim.setInterpolator(Interpolator.LINEAR);
 //        animation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            anim.setCycleCount(1000);
-
+            anim.setCycleCount(Animation.INDEFINITE);
             this.animation.getChildren().add(anim);
             root.getChildren().add(unitCircle);
             circleArrayList.add(unitCircle);
         }
-
+        this.animation.setRate(5);
+        taskMaker(1);
+        this.animation.play();
 
     }
 
@@ -126,8 +130,8 @@ public class CircleThingy extends Obstacle {
             if (!arc.getFill().equals(ball.getFill())) {
 //                System.out.print(arc.getStroke()+" "+ball.getFill());
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
-                    player.getAnimation().pause();
-                    this.animation.pause();
+//                    player.getAnimation().pause();
+//                    this.animation.pause();
                 }
             }
         }

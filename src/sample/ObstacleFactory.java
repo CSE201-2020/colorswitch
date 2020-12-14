@@ -31,15 +31,15 @@ public class ObstacleFactory {
                 System.out.println("small plus");
                 break;
             case 2:
-//                OBS.add(new CircleThingy(10,1,center,-1600,3));
-                System.out.println("Circle Thingy 3");
+                OBS.add(new CircleThingy(10,1,center,PosY,0));
+                System.out.println("Circle Thingy 0");
                 break;
             case 3:
-//                OBS.add(new CircleThingy(15,1,center,-1600,2));
-                System.out.println("Circle Thingy 1");
+                OBS.add(new CircleThingy(15,1,center,PosY,2));
+                System.out.println("Circle Thingy 2");
                 break;
             case 4:
-//                OBS.add(new CircleThingy(15,1,center,-1600,1));
+                OBS.add(new CircleThingy(15,1,center,PosY,1));
                 System.out.println("Circle Thingy 1");
                 break;
             case 5:
