@@ -36,4 +36,8 @@ public class ColorChanger extends GameElement{
     public Transition getAnimation() {
         return null;
     }
+    public int checkCollision(Player player) {
+        if (this.root.intersects(player.getBall().getBoundsInParent())) return 2;
+        return 0;
+    }
 }

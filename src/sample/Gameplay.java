@@ -98,7 +98,7 @@ public class Gameplay implements Serializable {
         gameLoop.play();
         mainScene.setFill(Color.web("272727"));
     }
-    void addNewObstacles(int posY) {
+    int addNewObstacles(int posY) {
         int preset = rand.nextInt(presetLength);
 //        preset = 4;
         ArrayList<Obstacle> NEW = ObstacleFactory.CreateRandomObstacle(preset, posY);
