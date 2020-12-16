@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -34,7 +35,7 @@ public class ColorChanger extends GameElement{
 
     @Override
     public Transition getAnimation() {
-        return null;
+        return new TranslateTransition();
     }
 
     public int checkCollision(Player player) {

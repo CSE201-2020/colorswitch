@@ -105,7 +105,7 @@ public class Gameplay implements Serializable {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(1);
+        int preset = rand.nextInt(5);
 //        preset = 4;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY);
         ArrayList<Obstacle> NEW = N.getObstacleList();
@@ -131,8 +131,9 @@ public class Gameplay implements Serializable {
         GameElement toBeRemoved = null;  // remove star and colorchanger
         for (GameElement node : obstacles ) {
             // detecting collision goes here.
-            int status = node.checkCollision(pl);
-             if (status < 0) {
+//            int status = node.checkCollision(pl);
+            int status = 3;
+            if (status < 0) {
                  if (!disentegrated) {
  //                    System.out.print("circle ");
                      Disintegration dis =  new Disintegration(pl, 10);
@@ -141,26 +142,26 @@ public class Gameplay implements Serializable {
                      disentegrated = true;
                      System.out.println("detected");
                  }
-             }
-             else if (status == 1) {
-                 System.out.println("STAR STAR");
-                 StarCollected col =  new StarCollected(pl, 5);
-                 col.getAnimation().play();
+            }
+            else if (status == 1) {
+                System.out.println("STAR STAR");
+                StarCollected col =  new StarCollected(pl, 5);
+                col.getAnimation().play();
 
-                 curscore++;
-                 String s= "" +curscore;
-                 score.setText(s);
+                curscore++;
+                String s= "" +curscore;
+                score.setText(s);
 
-                 ObstaclesRoot.getChildren().add(col.getRoot());
-                 ObstaclesRoot.getChildren().remove(node.getRoot());
-                 toBeRemoved = node;
-             }
-             else if (status == 2) {
-                 System.out.println("COLOR CHANGER");
-                 pl.changeColor();
-                 ObstaclesRoot.getChildren().remove(node.getRoot());
-                 toBeRemoved = node;
-             }
+                ObstaclesRoot.getChildren().add(col.getRoot());
+                ObstaclesRoot.getChildren().remove(node.getRoot());
+                toBeRemoved = node;
+            }
+            else if (status == 2) {
+                System.out.println("COLOR CHANGER");
+                pl.changeColor();
+                ObstaclesRoot.getChildren().remove(node.getRoot());
+                toBeRemoved = node;
+            }
 
         }
         if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
@@ -197,6 +198,7 @@ public class Gameplay implements Serializable {
                         Node node=(Node) e.getSource();
                         Stage stage=(Stage) node.getScene().getWindow();
                         if (!popup.isShowing()) {
+                            pauseEverything();
                             popup.show(stage);
                             ColorAdjust colorAdjust2 = new ColorAdjust();
                             colorAdjust2.setBrightness(-0.6);
@@ -282,6 +284,22 @@ public class Gameplay implements Serializable {
         return pl1;
     }
 
+    boolean pauseEverything () {
+        obstacles.forEach(gameElement -> {
+            gameElement.getAnimation().pause();
+        });
+        pl.getAnimation().pause();
+        return true;
+    }
+
+    boolean playEverything () {
+        obstacles.forEach(gameElement -> {
+            gameElement.getAnimation().play();
+        });
+        pl.getAnimation().play();
+        return true;
+    }
+
     public Popup getPopup() {
         return popup;
     }
@@ -293,6 +311,7 @@ public class Gameplay implements Serializable {
         mainScene.getRoot().setEffect(colorAdjust);
 
         this.popup.hide();
+        playEverything();
     }
 
     public Scene getMainScene() {
