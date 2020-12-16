@@ -14,8 +14,12 @@ import java.io.IOException;
 
 public class PauseView {
     private GameplayChallenges gameplay;
+    private Gameplay gameplay0;
     public void initData (GameplayChallenges gameplay) {
         this.gameplay = gameplay;
+    }
+    public void initData0 (Gameplay gameplay) {
+        this.gameplay0 = gameplay;
     }
     public void goToHome(MouseEvent event) throws IOException {
         System.out.println("hello");
@@ -44,11 +48,21 @@ public class PauseView {
         root.getChildren().add(MainRoot);
 
 //        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
+        // testing .... actually set old scene
+        if (gameplay != null) {
+            this.gameplay.getMainScene().setRoot(root);
+        }
+        if (gameplay0 != null) {
+            this.gameplay0.getMainScene().setRoot(root);
+        }
 
-        this.gameplay.getMainScene().setRoot(root);
     }
     public void hidePopup() {
-        this.gameplay.hidePopup();
-
+        if (gameplay != null) {
+            this.gameplay.hidePopup();
+        }
+        if (gameplay0 != null) {
+            this.gameplay0.hidePopup();
+        }
     }
 }

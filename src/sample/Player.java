@@ -10,9 +10,13 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 //ball
 public class Player {
+    Random rand = new Random();
     final private Circle ball;
     private TranslateTransition animation;
     Interpolator interpolator = new Interpolator() {
@@ -22,7 +26,7 @@ public class Player {
         }
 
     };
-
+    final private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")));
     Player(Color initColor,int posX, int posY) {
         ball = new Circle(posX,posY,12,initColor );
 
@@ -49,6 +53,18 @@ public class Player {
         initAnimation();
         this.animation.play();
     }
+    public void changeColor () {
+        ArrayList<Color> filtered = new ArrayList<>();
+        Color ballFill = (Color)this.ball.getFill();
+        colors.forEach(color -> {
+            if(!ballFill.equals(color))filtered.add(color);
+        });
+        this.getBall().setFill(filtered.get(rand.nextInt(filtered.size())));
+        System.out.println(colors);
+        System.out.println(filtered);
+
+    }
+
     public Circle getBall() {
         return ball;
     }

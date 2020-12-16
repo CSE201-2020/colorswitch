@@ -49,7 +49,7 @@ public class Star extends GameElement{
     }
 
     public int checkCollision(Player player) {
-        if (this.root.intersects(player.getBall().getBoundsInParent())) return 2;
+        if (this.root.intersects(player.getBall().getBoundsInParent())) return 1;
         return 0;
     }
 }

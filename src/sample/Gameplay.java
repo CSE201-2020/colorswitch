@@ -3,17 +3,18 @@ package sample;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -22,6 +23,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Font;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.Obstacles.CircleObstacle;
 import sample.Obstacles.HorizontalLineObstacle;
@@ -30,6 +33,7 @@ import sample.Obstacles.CircleThingy;
 import sample.animations.Disintegration;
 import sample.animations.StarCollected;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -43,6 +47,7 @@ public class Gameplay implements Serializable {
     int currentPos = -1600 ;
     boolean disentegrated = false;
     Player pl;
+    Popup popup;
     private Scene mainScene;
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
@@ -89,7 +94,7 @@ public class Gameplay implements Serializable {
                                 if (yPos < -425) tt.play();
                                 else tt.pause();
                                 if(yPos > -10) pl.getAnimation().pause();
-                                if (pl.getBall().getTranslateY() < currentPos) addNewObstacles(currentPos -= 200);
+                                if (pl.getBall().getTranslateY() < currentPos) currentPos = addNewObstacles(currentPos);
 
                                 handleCollisions(pl);
                             }
@@ -98,16 +103,19 @@ public class Gameplay implements Serializable {
         gameLoop.play();
         mainScene.setFill(Color.web("272727"));
     }
+
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(presetLength);
+        int preset = rand.nextInt(1);
 //        preset = 4;
-        ArrayList<Obstacle> NEW = ObstacleFactory.CreateRandomObstacle(preset, posY);
+        ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY);
+        ArrayList<Obstacle> NEW = N.getObstacleList();
+        System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
         int NEW_LENGTH = NEW.size();
         // gotta delete NEW_LENGTH from queue to save memory.
-        for (int i =0;i< NEW_LENGTH;i++) {
-            GameElement toRemove = obstacles.poll();
-            ObstaclesRoot.getChildren().remove(toRemove.getRoot());
-        }
+//        for (int i =0;i< NEW_LENGTH;i++) {
+//            GameElement toRemove = obstacles.poll();
+//            ObstaclesRoot.getChildren().remove(toRemove.getRoot());
+//        }
         //check queue size ::
         //System.out.println(obstacles.size()+" "+" "+ObstaclesRoot.getChildren().size());
         for (Obstacle obx: NEW) {
@@ -115,60 +123,44 @@ public class Gameplay implements Serializable {
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
         }
-        return NEW_LENGTH;
+        return N.getDist();
     }
-    int pink = Color.web("ff0181").hashCode();
-    int grey = Color.web("272727").hashCode();
-    void handleCollisions(Player  pl) {
-//        Bounds boundsInScreen = pl.getBall().localToScreen(pl.getBall().getBoundsInLocal());
-//        Color top =  robot.getPixelColor(boundsInScreen.getCenterX(),boundsInScreen.getMinY() - 3 );
-//        Color bottom =  robot.getPixelColor(boundsInScreen.getCenterX(),boundsInScreen.getMaxY()+ 3);
 
-//        if  (top.hashCode() != pink|| top.hashCode()!= grey )System.out.println("not OK");
-//        System.out.println(pl.+ " " +pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY());
-        // death , adding stars and  colour changing.
+    void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
-        for (GameElement node : obstacles ){
+        for (GameElement node : obstacles ) {
             // detecting collision goes here.
-//  ----  saksham 
-//             int status = node.checkCollision(pl);
+            int status = node.checkCollision(pl);
+             if (status < 0) {
+                 if (!disentegrated) {
+ //                    System.out.print("circle ");
+                     Disintegration dis =  new Disintegration(pl, 10);
+                     dis.getAnimation().play();
+                     ObstaclesRoot.getChildren().add(dis.getRoot());
+                     disentegrated = true;
+                     System.out.println("detected");
+                 }
+             }
+             else if (status == 1) {
+                 System.out.println("STAR STAR");
+                 StarCollected col =  new StarCollected(pl, 5);
+                 col.getAnimation().play();
 
-//             if (status < 0) {
-//                 if (!disentegrated) {
-// //                    System.out.print("circle ");
-//                     Disintegration dis =  new Disintegration(pl, 10);
-//                     dis.getAnimation().play();
-//                     ObstaclesRoot.getChildren().add(dis.getRoot());
-//                     disentegrated = true;
-//                     System.out.println("detected");
-//                 }
-//             }
-//             else if (status == 2) {
-//                 System.out.println("STAR STAR");
-//                 StarCollected col =  new StarCollected(pl, 5);
-//                 col.getAnimation().play();
-//                 ObstaclesRoot.getChildren().add(col.getRoot());
-//                 ObstaclesRoot.getChildren().remove(node.getRoot());
-//                 toBeRemoved = node;
-//             }
-//             else if (status == 3) {
-//  ----  saksham
-                //change color
-            if (node.getRoot().intersects(pl.getBall().getBoundsInParent())) {
-                if (node.getClass().getName().equals("sample.Obstacles"))System.out.print("circle ");
-                if (node.getClass().getName().equals("sample.Star")){
-                    System.out.print("Star ");
-                    ObstaclesRoot.getChildren().remove(node.getRoot());
-                    obstacles.remove(node);
-                    curscore++;
-                    String s= "" +curscore;
-                    score.setText(s);
-                }
-                if (node.getClass().getName().equals("sample.Obstacles.PlusObstacle"))System.out.print("PO ");
-                if (node.getClass().getName().equals("sample.Obstacles.HorizontalLineObstacle"))System.out.print("HL ");
-                System.out.println("detected");
-            }
+                 curscore++;
+                 String s= "" +curscore;
+                 score.setText(s);
+
+                 ObstaclesRoot.getChildren().add(col.getRoot());
+                 ObstaclesRoot.getChildren().remove(node.getRoot());
+                 toBeRemoved = node;
+             }
+             else if (status == 2) {
+                 System.out.println("COLOR CHANGER");
+                 pl.changeColor();
+                 ObstaclesRoot.getChildren().remove(node.getRoot());
+                 toBeRemoved = node;
+             }
 
         }
         if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
@@ -177,7 +169,44 @@ public class Gameplay implements Serializable {
     Node makePauseButton(int x, int y) {
         String svg = "m282.824 0c-155.947 0-282.824 126.877-282.824 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824-126.877-282.824-282.824-282.824zm-35.353 388.883h-70.706v-212.118h70.706zm141.412 0h-70.706v-212.118h70.706z";
         SVGPath pause = new SVGPath();
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "PauseView.fxml"
+                )
+        );
 
+        pause.setCursor(Cursor.OPEN_HAND);
+        AnchorPane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PauseView controller = loader.getController();
+        controller.initData0(this);
+
+        popup = new Popup();
+        if (pane != null )popup.getContent().add(pane);
+
+        EventHandler<MouseEvent> event =
+                new EventHandler<MouseEvent>() {
+
+                    public void handle(MouseEvent e)
+                    {
+                        Node node=(Node) e.getSource();
+                        Stage stage=(Stage) node.getScene().getWindow();
+                        if (!popup.isShowing()) {
+                            popup.show(stage);
+                            ColorAdjust colorAdjust2 = new ColorAdjust();
+                            colorAdjust2.setBrightness(-0.6);
+                            mainScene.getRoot().setEffect(colorAdjust2);
+                        }
+
+                    }
+                };
+
+        pause.setOnMouseClicked(event);
         pause.setContent(svg);
         pause.setFill(Color.LIGHTGRAY);
         double ratio = 0.06;
@@ -253,6 +282,18 @@ public class Gameplay implements Serializable {
         return pl1;
     }
 
+    public Popup getPopup() {
+        return popup;
+    }
+
+    public void hidePopup() {
+
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0);
+        mainScene.getRoot().setEffect(colorAdjust);
+
+        this.popup.hide();
+    }
 
     public Scene getMainScene() {
         return mainScene;

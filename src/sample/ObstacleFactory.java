@@ -3,6 +3,7 @@ package sample;
 import javafx.geometry.Pos;
 import sample.Obstacles.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class ObstacleFactory {
     /*
@@ -16,17 +17,42 @@ public class ObstacleFactory {
      */
     //returning arraylist to allow some presets to be a combination , like to consecutive opposite circleObstacles.
     static int center = 200 ;
+    static int d = 200;
 
-    static public ArrayList<Obstacle> CreateRandomObstacle (int preset, int PosY) {
+    public static class OB_dist {
+        final private ArrayList<Obstacle> obstacleList;
+        final private int dist;
+        OB_dist (ArrayList<Obstacle> obs, int dis) {
+            obstacleList = obs;
+            dist = dis;
+        }
+
+        public ArrayList<Obstacle> getObstacleList() {
+            return obstacleList;
+        }
+
+        public int getDist() {
+            return dist;
+        }
+    }
+    static public OB_dist CreateRandomObstacle (int preset, int PosY) {
 
         ArrayList<Obstacle> OBS = new ArrayList<Obstacle>();
+
         switch (preset) {
             case 0:
-                OBS.add(new CircleObstacle(60, -1,10, center, PosY));
-                OBS.add(new CircleObstacle(60, 1,10, center, PosY - 400));
-                System.out.println(" 1 -1");
+                PosY-=65;
+                CircleObstacle c0 = new CircleObstacle(60, -1,10, center, PosY);
+                int CircleHeight = (int)c0.getRoot().getBoundsInParent().getHeight();
+                PosY-=(d + 130);
+                CircleObstacle c1 = new CircleObstacle(60, 1,10, center, PosY);
+                OBS.add(c0);
+                OBS.add(c1);
+                PosY-=(65 + d);
+                System.out.println("                                         1 -1"+CircleHeight);
                 break;
             case 1:
+                PosY -= 65;
                 OBS.add(new PlusObstacle(60,1,10,center + 60, PosY));
                 System.out.println("small plus");
                 break;
@@ -51,7 +77,7 @@ public class ObstacleFactory {
                 System.out.println("Big plus");
                 break;
         }
-        return OBS;
+        return new OB_dist(OBS, PosY);
     }
 
     static public ArrayList<Obstacle> CreateChallenge (int challenge, int PosY) {

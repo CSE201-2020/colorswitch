@@ -23,13 +23,14 @@ public class Controller {
 
     @FXML
     private ImageView loadGame;
+    Gameplay gameplay;
     @FXML
     void startGame(MouseEvent event) throws Exception {
 //        AnchorPane pane= FXMLLoader.load(getClass().getResource("Almanac.fxml"));
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
-//        Gameplay gameplay = new Gameplay(700 , 9/(16.0));
-        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
+        gameplay = new Gameplay(700 , 9/(16.0));
+//        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
 //        gameplay.init(datatable)
         System.out.println(node);
         System.out.println(gameplay);
