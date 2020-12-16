@@ -36,7 +36,7 @@ public class StarCollected {
 
             int distX = rand.nextInt(40) - 100;
             starSVG.setTranslateX(distX);
-            starSVG.setFill(Color.WHITE);
+            starSVG.setFill(Color.AZURE);
             double opacity = (rand.nextInt(50) + 50.0 )/(100);
             starSVG.setOpacity(opacity);
 

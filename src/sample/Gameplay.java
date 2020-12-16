@@ -66,7 +66,7 @@ public class Gameplay implements Serializable {
         score.setTextFill(Paint.valueOf("#fff9f9"));
         score.setTranslateY(5);
         MainRoot.getChildren().add(makePauseButton(80,-250));
-        MainRoot.getChildren().add(makeStarCount(50,25));
+        MainRoot.getChildren().add(makeStarCount(60,25));
         MainRoot.getChildren().add(score);
 
         MainRoot.getChildren().add(ObstaclesRoot);
@@ -123,6 +123,16 @@ public class Gameplay implements Serializable {
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
         }
+        ColorChanger newcolorchanger = new ColorChanger(center,posY-220);
+        int newcolorchance=rand.nextInt(4);
+        if(newcolorchance==3){
+            obstacles.add(newcolorchanger);
+            ObstaclesRoot.getChildren().add(newcolorchanger.getRoot());
+        }
+        Star newstar=new Star(center, posY,Color.AZURE,1.1);
+        newstar.getAnimation().play();
+        obstacles.add(newstar);
+        ObstaclesRoot.getChildren().add(newstar.getRoot());
         return N.getDist();
     }
 
@@ -208,7 +218,7 @@ public class Gameplay implements Serializable {
 
         pause.setOnMouseClicked(event);
         pause.setContent(svg);
-        pause.setFill(Color.LIGHTGRAY);
+        pause.setFill(Color.AZURE);
         double ratio = 0.06;
         pause.setScaleY(ratio);
         pause.setScaleX(ratio);
@@ -218,9 +228,9 @@ public class Gameplay implements Serializable {
     }
 
     Node makeStarCount(int x,int y) {
-        Star StarImage = new Star(x,y,Color.LIGHTGRAY,1.1);
+        Star StarImage = new Star(x,y,Color.AZURE,1.1);
         double ratio = 0.06;
-        StarImage.setScaleStar(1.5,1.5);
+        StarImage.setScaleStar(1.35,1.35);
         return StarImage.getRoot();
     }
 
@@ -229,10 +239,12 @@ public class Gameplay implements Serializable {
     Group initiateTestObstacles () {
         CircleObstacle obs = new CircleObstacle(100,-1,24,center,200);
         CircleObstacle obs2 = new CircleObstacle(100,1,24,center,-200);
-        Star star = new Star(center, 200,Color.RED,1.1);
-        PlusObstacle plus0 = new PlusObstacle(60,1,10,center + 60,-600);
-        PlusObstacle plus1 = new PlusObstacle(120,1,20,center - 120 ,-1000);
-        HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,10,-400,-1200);
+        Star star1 = new Star(center, 200,Color.AZURE,1.1);
+        Star star2 = new Star(center, 0,Color.AZURE,1.1);
+        Star star3 = new Star(center, -200,Color.AZURE,1.1);
+        PlusObstacle plus0 = new PlusObstacle(60,1,15,center + 60,-600);
+        PlusObstacle plus1 = new PlusObstacle(100,1,20,center - 80 ,-1000);
+        HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,18,-400,-1200);
         CircleThingy test = new CircleThingy(15,1,center,-1600,0);
         //This is the star for collection not score.
         ColorChanger tary= new ColorChanger(center,-220);
@@ -241,12 +253,16 @@ public class Gameplay implements Serializable {
         obs2.getAnimation().play();
         plus0.getAnimation().play();
         plus1.getAnimation().play();
-        star.getAnimation().play();
+        star1.getAnimation().play();
+        star2.getAnimation().play();
+        star3.getAnimation().play();
         test.getAnimation().play();
 
         obstacles.add(obs);
         obstacles.add(obs2);
-        obstacles.add(star);
+        obstacles.add(star1);
+        obstacles.add(star2);
+        obstacles.add(star3);
         obstacles.add(plus0);
         obstacles.add(plus1);
         obstacles.add(hor0);
@@ -259,7 +275,9 @@ public class Gameplay implements Serializable {
         ObstaclesRoot.getChildren().add(obs2.getRoot());
         ObstaclesRoot.getChildren().add(obs.getRoot());
         ObstaclesRoot.getChildren().add(plus0.getRoot());
-        ObstaclesRoot.getChildren().add(star.getRoot());
+        ObstaclesRoot.getChildren().add(star1.getRoot());
+        ObstaclesRoot.getChildren().add(star2.getRoot());
+        ObstaclesRoot.getChildren().add(star3.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
         ObstaclesRoot.getChildren().add(plus1.getRoot());
         ObstaclesRoot.getChildren().add(test.getRoot());
