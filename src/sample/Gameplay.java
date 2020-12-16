@@ -49,6 +49,8 @@ public class Gameplay implements Serializable {
     int center = 200;
     Label score;
     int curscore=0;
+    int pink = Color.web("ff0181").hashCode();
+    int grey = Color.web("272727").hashCode();
 
     Gameplay (int height, double ratio) {
         ObstaclesRoot = initiateTestObstacles();
@@ -117,8 +119,7 @@ public class Gameplay implements Serializable {
         }
         return NEW_LENGTH;
     }
-    int pink = Color.web("ff0181").hashCode();
-    int grey = Color.web("272727").hashCode();
+
     void handleCollisions(Player  pl) {
 //        Bounds boundsInScreen = pl.getBall().localToScreen(pl.getBall().getBoundsInLocal());
 //        Color top =  robot.getPixelColor(boundsInScreen.getCenterX(),boundsInScreen.getMinY() - 3 );
