@@ -4,12 +4,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.media.Media;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -26,12 +28,16 @@ public class  Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        Media media = new Media(getClass().getResource("/resources/maintheme.mp3").toURI().toString());
+        MediaPlayer player = new MediaPlayer(media);
+        player.play();
+
         AnchorPane root = FXMLLoader.load(getClass().getResource("login.fxml"));
         System.out.println("Enter Username : ");
         Scanner sc= new Scanner(System.in);
 //        String s=sc.next();
         currentd.setUsername("Bhavesh");
-        currentd.setTotalstars(100);
+        currentd.setTotalstars(0);
         serialize();
         deserialize();
         System.out.println("Copy Stars are : " + copy.getTotalstars());
