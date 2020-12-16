@@ -17,7 +17,7 @@ public class ColorChanger extends GameElement{
     public ColorChanger(int posX, int posY) {
         this.root = new Group();
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,25,25,90*i,90);
+            Arc rect = new Arc(posX,posY,15,15,90*i,90);
             rect.setType(ArcType.ROUND);
             rect.setStrokeLineCap(StrokeLineCap.BUTT);
 //            rect.setStroke(colors.get(i));
