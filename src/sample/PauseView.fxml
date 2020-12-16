@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="713.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PauseView">
+   <children>
+      <Text fill="WHITE" layoutX="130.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PAUSE" textAlignment="CENTER">
+         <font>
+            <Font name="Andale Mono" size="46.0" />
+         </font>
+      </Text>
+      <SVGPath content="M61.44,0c33.93,0,61.44,27.51,61.44,61.44c0,33.93-27.51,61.44-61.44,61.44C27.51,122.88,0,95.37,0,61.44 C0,27.51,27.51,0,61.44,0L61.44,0z M61.44,29L30.06,59.74l7.65,4.02l23.52-24.69l23.92,24.7l7.66-4.02L61.44,29L61.44,29L61.44,29z M39.39,67.13L39.39,67.13l22.08-22.09l22.02,22.09l0,0l0,0v21.67H67.4v-15.3H55.34v15.3H39.39V67.13L39.39,67.13L39.39,67.13 L39.39,67.13z M61.44,9.09c28.91,0,52.35,23.44,52.35,52.35c0,28.91-23.44,52.35-52.35,52.35S9.09,90.35,9.09,61.44 C9.09,32.53,32.53,9.09,61.44,9.09L61.44,9.09z" fillRule="EVEN_ODD" layoutX="-13.0" layoutY="-10.0" onMouseClicked="#goToHome" scaleX="0.4" scaleY="0.4">
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </SVGPath>
+      <SVGPath content="M 238.933 0 C 106.974 0 0 106.974 0 238.933 s 106.974 238.933 238.933 238.933 s 238.933 -106.974 238.933 -238.933 C 477.726 107.033 370.834 0.141 238.933 0 Z M 339.557 246.546 c -1.654 3.318 -4.343 6.008 -7.662 7.662 v 0.085 L 195.362 322.56 c -8.432 4.213 -18.682 0.794 -22.896 -7.638 c -1.198 -2.397 -1.815 -5.043 -1.8 -7.722 V 170.667 c -0.004 -9.426 7.633 -17.07 17.059 -17.075 c 2.651 -0.001 5.266 0.615 7.637 1.8 l 136.533 68.267 C 340.331 227.863 343.762 238.11 339.557 246.546 Z" layoutX="-39.0" layoutY="105.0" onMouseClicked="#hidePopup" scaleX="0.25" scaleY="0.25">
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor></SVGPath>
+   </children>
+   <padding>
+      <Insets left="-100.0" />
+   </padding>
+</AnchorPane>

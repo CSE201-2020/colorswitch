@@ -9,7 +9,6 @@ public class User implements Serializable {
     private int gamesplayed;
     private int gamessaves;
     private ArrayList<Gameplay> gamelist = new ArrayList<>();
-
     public void setUsername(String username) {
         this.username = username;
     }

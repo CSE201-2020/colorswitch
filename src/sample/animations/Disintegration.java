@@ -1,9 +1,8 @@
 package sample.animations;
 
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -35,30 +34,43 @@ public class Disintegration {
 
         this.animation = new ParallelTransition();
         for (int i =0;i<N_PIECES; i++) {
-            int radius = rand.nextInt(10);
+            int radius = rand.nextInt(5) + 2;
 
             System.out.println(initial_x+" "+initial_y);
             Circle smaller = new Circle(initial_x,initial_y, radius);
             Color color = colors.get(i%4);
             smaller.setFill(color);
-            int distance = rand.nextInt(600) - 300 ;
-
-            TranslateTransition lateralTransition = new TranslateTransition();
-            lateralTransition.setNode(smaller);
-            lateralTransition.setInterpolator(Interpolator.LINEAR);
-            lateralTransition.setDuration(Duration.millis(5000));
-            lateralTransition.setByX(distance);
-            lateralTransition.setCycleCount(0);
 
             TranslateTransition gravity = new TranslateTransition(Duration.millis(2000), smaller);
-            gravity.setByY(100f);
+            gravity.setByY(rand.nextInt(500) + 400);
             gravity.setCycleCount(0);
             gravity.setInterpolator(interpolator);
 
             this.animation.getChildren().add(gravity);
-            this.animation.getChildren().add(lateralTransition);
             this.root.getChildren().add(smaller);
+
+            final Timeline loop = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+                int deltaX = (rand.nextInt(10) + 1) * (rand.nextBoolean()?1:-1);
+
+                @Override
+                public void handle(final ActionEvent t) {
+                    smaller.setLayoutX(smaller.getLayoutX() + deltaX);
+                    System.out.println(smaller.getLayoutX());
+//                    final Bounds bounds = canvas.getBoundsInLocal();
+                    final boolean atRightBorder = smaller.getLayoutX() >= (200);
+                    final boolean atLeftBorder = smaller.getLayoutX() <= (-200);
+
+                    if (atRightBorder || atLeftBorder) {
+                        deltaX *= -1;
+                    }
+                }
+            }));
+
+            loop.setCycleCount(Timeline.INDEFINITE);
+            this.animation.getChildren().add(loop);
+
         }
+
 
 
     }

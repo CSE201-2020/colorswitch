@@ -37,11 +37,10 @@ public class CircleObstacle extends Obstacle {
         root = new Group();
         int deg = 0;
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,radius,radius,90*i,80);
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
             rect.setType(ArcType.OPEN);
             rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setStroke(colors.get(i));
-            rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setFill(Color.TRANSPARENT);
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
@@ -86,7 +85,7 @@ public class CircleObstacle extends Obstacle {
             Collections.rotate(colors,2);
         }
         for (int i = 0 ;i < 4; ++i) {
-            Arc rect = new Arc(posX,posY,radius,radius,90*i,10);
+            Arc rect = new Arc(posX,posY,radius,radius,90*i,90);
             rect.setType(ArcType.OPEN);
             rect.setStrokeLineCap(StrokeLineCap.BUTT);
             rect.setStroke(colors.get(i));
