@@ -17,7 +17,7 @@ public class ObstacleFactory {
      */
     //returning arraylist to allow some presets to be a combination , like to consecutive opposite circleObstacles.
     static int center = 200 ;
-    static int d = 200;
+    static int d = 150;
 
     public static class OB_dist {
         final private ArrayList<Obstacle> obstacleList;
@@ -35,6 +35,9 @@ public class ObstacleFactory {
             return dist;
         }
     }
+
+    static double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
+    static double temp2H = 7.5 * 12.0 ;
     static public OB_dist CreateRandomObstacle (int preset, int PosY) {
 
         ArrayList<Obstacle> OBS = new ArrayList<Obstacle>();
@@ -49,27 +52,35 @@ public class ObstacleFactory {
                 OBS.add(c0);
                 OBS.add(c1);
                 PosY-=(65 + d);
-                System.out.println("                                         1 -1"+CircleHeight);
                 break;
             case 1:
                 PosY -= 65;
                 OBS.add(new PlusObstacle(60,1,10,center + 60, PosY));
+                PosY -= (65 + d);
                 System.out.println("small plus");
                 break;
             case 2:
-                OBS.add(new CircleThingy(10,1,center,PosY,0));
+                PosY -= tempH;
+                OBS.add(new CircleThingy(12,1,center,PosY,0));
                 System.out.println("Circle Thingy 0");
+                PosY -= (tempH + d);
                 break;
             case 3:
-                OBS.add(new CircleThingy(15,1,center,PosY,2));
-                System.out.println("Circle Thingy 2");
+                PosY -= tempH;
+                OBS.add(new CircleThingy(12,1,center,PosY,1));
+                System.out.println("Circle Thingy 1");
+                PosY -= (tempH + d);
                 break;
             case 4:
-                OBS.add(new CircleThingy(15,1,center,PosY,1));
-                System.out.println("Circle Thingy 1");
+                PosY -= temp2H;
+                OBS.add(new CircleThingy(12,1,center,PosY,2));
+                System.out.println("Circle Thingy 2");
+                PosY -= (temp2H + d);
                 break;
             case 5:
+                PosY -= 65;
                 OBS.add(new DoubleCircleObstacle(60,1,10,center,PosY));
+                PosY -= (65 + d);
                 System.out.println("Double Circle");
                 break;
             case 6:
