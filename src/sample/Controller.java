@@ -55,9 +55,9 @@ public class Controller {
         gameplay = new Gameplay(700 , 9/(16.0), this.user);
 //        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
 //        gameplay.init(datatable)
-        System.out.println(node);
-        System.out.println(gameplay);
-        System.out.println(stage);
+        System.out.println("Node"+ node);
+        System.out.println("gameplay +"+ gameplay);
+        System.out.println("Stage"+stage);
 
         stage.setTitle("gameplay");
         stage.setScene(gameplay.getMainScene());
@@ -93,7 +93,7 @@ public class Controller {
         ArrayList<String> namesList = new ArrayList<>();
         ArrayList<Integer> scores = new ArrayList<>();
         this.user.getGamelist().forEach((date,db) -> {
-            System.out.println(date.toString());
+            System.out.println("Date"+date.toString());
             names.put(date.toString(),db);
             namesList.add(date.toString());
             scores.add(db.curscore);

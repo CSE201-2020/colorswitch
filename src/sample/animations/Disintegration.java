@@ -36,7 +36,7 @@ public class Disintegration {
         for (int i =0;i<N_PIECES; i++) {
             int radius = rand.nextInt(5) + 2;
 
-            System.out.println(initial_x+" "+initial_y);
+            System.out.println("Disintegration "+"X "+initial_x+" "+initial_y);
             Circle smaller = new Circle(initial_x,initial_y, radius);
             Color color = colors.get(i%4);
             smaller.setFill(color);
@@ -55,18 +55,21 @@ public class Disintegration {
                 @Override
                 public void handle(final ActionEvent t) {
                     smaller.setLayoutX(smaller.getLayoutX() + deltaX);
-                    System.out.println(smaller.getLayoutX());
+                    System.out.println("Disintegration"+smaller.getLayoutX());
 //                    final Bounds bounds = canvas.getBoundsInLocal();
                     final boolean atRightBorder = smaller.getLayoutX() >= (200);
                     final boolean atLeftBorder = smaller.getLayoutX() <= (-200);
-
+                    final boolean down = smaller.getBoundsInParent().getCenterY() >= (700);
+                    if (down) {
+                        animation.stop();
+                    }
                     if (atRightBorder || atLeftBorder) {
                         deltaX *= -1;
                     }
                 }
             }));
 
-            loop.setCycleCount(Timeline.INDEFINITE);
+            loop.setCycleCount(20000);
             this.animation.getChildren().add(loop);
 
         }

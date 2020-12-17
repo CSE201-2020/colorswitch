@@ -61,7 +61,7 @@ public class Player {
         });
         this.getBall().setFill(filtered.get(rand.nextInt(filtered.size())));
         System.out.println(colors);
-        System.out.println(filtered);
+        System.out.println("filtered"+filtered);
 
     }
 

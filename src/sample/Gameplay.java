@@ -204,17 +204,18 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(2 )+2;
+        System.out.println("In add new OBstacle");
+        int preset = rand.nextInt(10 );
 //        preset = 3 ;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY,curscore);
         ArrayList<GameElement> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
         int NEW_LENGTH = NEW.size();
-        // gotta delete NEW_LENGTH from queue to save memory.
-        for (int i =0;i< NEW_LENGTH;i++) {
-            GameElement toRemove = obstacles.poll();
-            if (toRemove != null) ObstaclesRoot.getChildren().remove(toRemove.getRoot());
-        }
+//        // gotta delete NEW_LENGTH from queue to save memory.
+//        for (int i =0;i< NEW_LENGTH;i++) {
+//            GameElement toRemove = obstacles.poll();
+//            if (toRemove != null) ObstaclesRoot.getChildren().remove(toRemove.getRoot());
+//        }
         //check queue size ::
         //System.out.println(obstacles.size()+" "+" "+ObstaclesRoot.getChildren().size());
         for (GameElement obx: NEW) {
@@ -250,6 +251,7 @@ public class Gameplay {
         );
         try {
             paneDeath = loader.load();
+            System.out.println("got iitttt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -259,20 +261,39 @@ public class Gameplay {
 
         popup = new Popup();
         if (paneDeath != null ) {
-            System.out.println(popup.getContent().setAll(paneDeath));
+            System.out.println("popup "+popup.getContent().setAll(paneDeath));
         }
         Stage stage=(Stage) this.getMainScene().getWindow();
         if (!popup.isShowing()) {
             pauseEverything();
-            popup.show(stage);
+
             ColorAdjust colorAdjust2 = new ColorAdjust();
             colorAdjust2.setBrightness(-0.6);
+            try{
+            popup.show(stage);
+            }
+            catch (Exception e){
+                System.out.println("Problemmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+            }
             mainScene.getRoot().setEffect(colorAdjust2);
         }
 
 
     }
-
+    class delayTask extends TimerTask {
+        StarCollected col;
+        delayTask(StarCollected s){
+            col=s;
+        }
+        @Override
+        public void run() {
+            ObstaclesRoot.getChildren().remove(col.getRoot());
+        }
+    }
+    public void taskMaker (int seconds,StarCollected col) {
+        Timer timer = new Timer();
+        timer.schedule(new delayTask(col), seconds * 1000);
+    }
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
@@ -304,6 +325,8 @@ public class Gameplay {
 
                 ObstaclesRoot.getChildren().add(col.getRoot());
                 ObstaclesRoot.getChildren().remove(node.getRoot());
+                taskMaker(2,col);
+
                 toBeRemoved = node;
             }
             else if (status == 2) {
@@ -355,9 +378,10 @@ public class Gameplay {
                         }
                         if (!popup.isShowing()) {
                             pauseEverything();
-                            popup.show(stage);
+//
                             ColorAdjust colorAdjust2 = new ColorAdjust();
                             colorAdjust2.setBrightness(-0.6);
+                            popup.show(stage);
                             mainScene.getRoot().setEffect(colorAdjust2);
                         }
 
