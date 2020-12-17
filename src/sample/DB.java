@@ -32,21 +32,21 @@ public class DB implements Serializable {
             Class[] cArg = new Class[args.size()] ;
             Arrays.fill(cArg, int.class);
             if (name.contains("sample.Obstacles")){
-                Obstacle obs =  (Obstacle) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),args.get(1),args.get(2),args.get(3),args.get(4));
+                Obstacle obs =  (Obstacle) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),args.get(1),args.get(2),args.get(3),PosY);
                 ObstaclesRoot.getChildren().add(obs.getRoot());
                 obs.getAnimation().play();
                 obstacles.add(obs);
             }
             else if (name.equals("sample.ColorChanger")) {
-                ColorChanger obs = (ColorChanger) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),args.get(1));
+                ColorChanger obs = (ColorChanger) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),PosY);
                 ObstaclesRoot.getChildren().add(obs.getRoot());
                 obs.getAnimation().play();
                 obstacles.add(obs);
             }
             else if (name.equals("sample.Star")) {
                 cArg = new Class[args.size() + 1] ;
-                cArg[0] = int.class;cArg[1] = int.class;cArg[2] = Color.class;cArg[3] = int.class;
-                Star obs = (Star) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),args.get(1), Color.AZURE ,args.get(2));
+                cArg[0] = int.class;cArg[1] = int.class;cArg[2] = Color.class;cArg[3] = double.class;
+                Star obs = (Star) this.className.getDeclaredConstructor(cArg).newInstance(args.get(0),PosY, Color.AZURE ,args.get(2));
                 ObstaclesRoot.getChildren().add(obs.getRoot());
                 obs.getAnimation().play();
                 obstacles.add(obs);

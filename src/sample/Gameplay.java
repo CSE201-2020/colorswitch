@@ -39,17 +39,22 @@ import java.util.*;
 
 public class Gameplay {
 
+    final int presetLength = 9;
     public static class DB implements Serializable {
         private static final long serialVersionUID = 7368175650914175345L;
 
-      final int presetLength = 9;
-      int currentPos = -600 ;
+      double ballPos = 0 ;
+      int currentPos = -1200 ;
+      double cameraPos = 0;
       transient Player pl; // TODO // divide into posy, color
         Queue<sample.DB> obstac= new LinkedList<>(); // TODO // divide into posY, rotation
         int curscore=0;  // TODO
         DB() {
         }
-        void updateValues(Queue<sample.DB> obstacles, int cur) {
+        void updateValues(Queue<sample.DB> obstacles, int cur, double ballPos,double cameraPos, int currentPos) {
+            this.ballPos = ballPos;
+            this.cameraPos = cameraPos;
+            this.currentPos = currentPos;
             this.obstac = new LinkedList<>(obstacles);
             this.curscore = cur;
             System.out.println("savingsavingsavingsavingsavingsavingsavingsavingsavingsavingsaving"+obstacles);
@@ -63,8 +68,8 @@ public class Gameplay {
         @Override
         public String toString () {
             String result = "";
-            result += "\ncurrentPos: "+ currentPos;
-            result += "\npl: "+ pl;
+            result += "\nballPos: "+ ballPos;
+            result += "\nObstaclePos: "+ cameraPos ;
             result += "\nobstacles: "+ obstac;
             result += "\ncurrScore: "+ curscore;
 //        result += "\ngamesplayed: "+ gamesplayed;
@@ -77,7 +82,6 @@ public class Gameplay {
 
 
     final private transient Random rand = new Random();
-    final private transient int presetLength = 7;
     int currentPos = -600 ; // TODO
 
     boolean disentegrated = false;
@@ -155,7 +159,10 @@ public class Gameplay {
         ObstaclesRoot = new Group();
         gameInfo.initializeObstacles(ObstaclesRoot, this.obstacles);
         pl = initiatePlayer();
+        pl.getBall().setTranslateY(gameInfo.ballPos);
+
         ObstaclesRoot.getChildren().add(pl.getBall());
+        ObstaclesRoot.setTranslateY(gameInfo.cameraPos);
         Group MainRoot = new Group();
 
         this.currentPos = gameInfo.currentPos;
@@ -212,7 +219,7 @@ public class Gameplay {
         ArrayList<GameElement> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
         int NEW_LENGTH = NEW.size();
-//        // gotta delete NEW_LENGTH from queue to save memory.
+        // gotta delete NEW_LENGTH from queue to save memory.
 //        for (int i =0;i< NEW_LENGTH;i++) {
 //            GameElement toRemove = obstacles.poll();
 //            if (toRemove != null) ObstaclesRoot.getChildren().remove(toRemove.getRoot());
@@ -231,6 +238,7 @@ public class Gameplay {
             obstacles.add(newcolorchanger);
             ObstaclesRoot.getChildren().add(newcolorchanger.getRoot());
         }
+        pl.getBall().toFront();
 
 //        Star newstar=new Star(center, posY+215,Color.AZURE,1.1);
 //        double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
@@ -283,6 +291,7 @@ public class Gameplay {
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
+        System.out.println(obstacles.size()+" "+ObstaclesRoot.getChildren().size());
         for (GameElement node : obstacles ) {
             // detecting collision goes here.
             int status = node.checkCollision(pl);
@@ -364,11 +373,11 @@ public class Gameplay {
                         }
                         if (!popup.isShowing()) {
                             pauseEverything();
-//
                             ColorAdjust colorAdjust2 = new ColorAdjust();
                             colorAdjust2.setBrightness(-0.6);
                             popup.show(stage);
                             mainScene.getRoot().setEffect(colorAdjust2);
+                          
                         }
 
                     }
@@ -495,7 +504,7 @@ public class Gameplay {
             gameElement.obsInfo.updateValues(gameElement);
             q.add(gameElement.obsInfo);
         });
-        this.gameInfo.updateValues(q,this.curscore);
+        this.gameInfo.updateValues(q,this.curscore,this.pl.getBall().getTranslateY(),this.ObstaclesRoot.getTranslateY(), currentPos);
         this.user.getGamelist().put(new Date(), this.gameInfo);
         try {
             Main.serializeList("users_main");

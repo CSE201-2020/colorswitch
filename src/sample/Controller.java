@@ -36,11 +36,6 @@ public class Controller {
     @FXML
     private ImageView trophy;
 
-    @FXML
-    private ListView<String> time;
-    @FXML
-    private ListView<Integer> score;
-
 
     Gameplay gameplay;
     User user ;
@@ -85,46 +80,25 @@ public class Controller {
     Gameplay.DB current = new Gameplay.DB();
     @FXML
     void loadGame(MouseEvent event) throws Exception{
-       AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
+
+        // need to make the main page user specific
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "loadgame.fxml"
+                )
+        );
+        AnchorPane pane= loader.load();
+        GameplayLoader controller = loader.getController();
 
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
-        HashMap<String, Gameplay.DB> names = new HashMap<>();
-        ArrayList<String> namesList = new ArrayList<>();
-        ArrayList<Integer> scores = new ArrayList<>();
-        this.user.getGamelist().forEach((date,db) -> {
-            System.out.println("Date"+date.toString());
-            names.put(date.toString(),db);
-            namesList.add(date.toString());
-            scores.add(db.curscore);
-        });
-        System.out.println(score);
-        score.setItems(FXCollections.observableArrayList(scores));
-        time.setItems(FXCollections.observableArrayList(namesList));
-        time.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<String>() {
-                    public void changed(ObservableValue<? extends String> ov,
-                                        String old_val, String new_val) {
-                        System.out.println("you have chosen: "+new_val);
-                        // deserialize and make copy of User
-                        //TODO
-                        current = names.get(new_val);
-                        //deserialize from this.user
-                        gameplay = new Gameplay(700 , 9/(16.0), user, current);
 
-                        System.out.println(node);
-                        System.out.println(gameplay);
-                        System.out.println(stage);
+        controller.initUser(this.user, stage);
 
-                        stage.setTitle("gameplay");
-                        stage.setScene(gameplay.getMainScene());
-                        stage.show();
-                    }
-                });
-        Scene mainScene =new Scene(pane2, 400, 700);
-        stage.setTitle("choose gameplay");
-        stage.setScene(mainScene);
+        stage.setTitle("choose game");
+        stage.setScene(new Scene(pane, 400.0, 700.0));
         stage.show();
+
     }
     @FXML
     void loadChallenges(MouseEvent event) throws Exception{
