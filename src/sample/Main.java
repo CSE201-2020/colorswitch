@@ -57,6 +57,8 @@ public class  Main extends Application {
 
         CircleObstacle o1 = new CircleObstacle(15,-1,5,150,62);
         CircleObstacle o2 = new CircleObstacle(15,1,5,230,62);
+        o1.getAnimation().setRate(1.5);
+        o2.getAnimation().setRate(1.5);
         Group rooto1 = o1.getRoot();
         Group rooto2 = o2.getRoot();
         Group MainRoot = new Group();

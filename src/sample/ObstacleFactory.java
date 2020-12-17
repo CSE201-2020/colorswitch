@@ -37,8 +37,8 @@ public class ObstacleFactory {
         }
     }
 
-    static double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
-    static double temp2H = 7.5 * 12.0 ;
+    static double tempH = Math.pow(3,-0.5)*(23.5)* 14 / 2;
+    static double temp2H = 7.5 * 1.0 ;
     static double obrate=1;
     static public OB_dist CreateRandomObstacle (int preset, int PosY , int curscore) {
         ArrayList<GameElement> OBS = new ArrayList<GameElement>();
@@ -71,7 +71,7 @@ public class ObstacleFactory {
                 break;
             case 1:
                 PosY -= 65;
-                PlusObstacle c1p1=new PlusObstacle(60,1,10,center + 60, PosY);
+                PlusObstacle c1p1=new PlusObstacle(60,1,17,center + 60, PosY);
                 c1p1.getAnimation().setRate(obrate);
                 OBS.add(c1p1);
                 newstar=new Star(center, PosY-50, Color.AZURE,1.1);
@@ -80,24 +80,24 @@ public class ObstacleFactory {
                 System.out.println("small plus");
                 break;
             case 2:
-                PosY -= tempH +25;
-                OBS.add(new CircleThingy(12,1,center,PosY,0));
+                PosY -= tempH +30;
+                OBS.add(new CircleThingy(14,1,center,PosY,0));
                 newstar=new Star(center, PosY, Color.AZURE,1.1);
                 OBS.add(newstar);
                 System.out.println("Circle Thingy 0");
-                PosY -= (tempH + d+10);
+                PosY -= (tempH + d);
                 break;
             case 3:
-                PosY -= tempH;
-                OBS.add(new CircleThingy(12,1,center,PosY,1));
+                PosY -= tempH+20;
+                OBS.add(new CircleThingy(14,1,center,PosY,1));
                 newstar=new Star(center, PosY, Color.AZURE,1.1);
                 OBS.add(newstar);
                 System.out.println("Circle Thingy 1");
-                PosY -= (tempH + d+10);
+                PosY -= (tempH + d);
                 break;
             case 4:
                 PosY -= temp2H;
-                OBS.add(new CircleThingy(12,1,center,PosY,2));
+                OBS.add(new CircleThingy(14,1,center,PosY,2));
                 newstar=new Star(center, PosY, Color.AZURE,1.1);
                 OBS.add(newstar);
                 System.out.println("Circle Thingy 2");

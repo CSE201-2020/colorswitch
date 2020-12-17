@@ -202,8 +202,8 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(11 );
-        preset = 7 ;
+        int preset = rand.nextInt(2 )+2;
+//        preset = 3 ;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY,curscore);
         ArrayList<GameElement> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
