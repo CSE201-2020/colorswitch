@@ -46,60 +46,63 @@ public class GameplayChallenges implements Serializable {
     Queue<GameElement> obstacles= new LinkedList<>();
     Group ObstaclesRoot;
     Label score;
+
     int curscore=0;
 
     private Popup popup;
     public int initiateChallenge(int challenge, int posY) {
 
-        ArrayList<Obstacle> NEW = ObstacleFactory.CreateChallenge(challenge, posY);
-        int NEW_LENGTH = NEW.size();
+        ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(challenge, posY,curscore);
 
-        for (Obstacle obx: NEW) {
+        ArrayList<GameElement> NEW = N.getObstacleList();
+        int NEW_LENGTH = NEW.size();
+        for (GameElement obx: NEW) {
             obstacles.add(obx);
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
         }
         FinishLine fin = new FinishLine(200);// change posY according to obstacles
         ObstaclesRoot.getChildren().add(fin.getRoot());
+        obstacles.add(fin);
         return NEW_LENGTH;
     }
 
-    void handleCollisions(Player  pl) {
-        GameElement toBeRemoved = null;  // remove star and colorchanger
-        for (GameElement node : obstacles ) {
-            int status = node.checkCollision(pl);
-
-            if (status < 0) {
-                if (!disentegrated) {
-//                    System.out.print("circle ");
-                    Disintegration dis = new Disintegration(pl, 15);
-                    dis.getAnimation().play();
-                    ObstaclesRoot.getChildren().add(dis.getRoot());
-                    disentegrated = true;
-                    System.out.println("detected");
-                }
-            } else if (status == 2) {
-                System.out.println("STAR STAR");
-                StarCollected col = new StarCollected(pl, 5);
-
-                ObstaclesRoot.getChildren().add(col.getRoot());
-                col.getAnimation().play();
-
-                ObstaclesRoot.getChildren().remove(node.getRoot());
-                toBeRemoved = node;
-
-                curscore++;
-                String s = "" + curscore;
-                score.setText(s);
-            } else if (status == 3) {
-            }
-        }
-        if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
-    }
+//    void handleCollisions(Player  pla) {
+//        GameElement toBeRemoved = null;  // remove star and colorchanger
+//        for (GameElement node : obstacles ) {
+//            int status = node.checkCollision(pl);
+//
+//            if (status < 0) {
+//                if (!disentegrated) {
+////                    System.out.print("circle ");
+//                    Disintegration dis = new Disintegration(pl, 15);
+//                    dis.getAnimation().play();
+//                    ObstaclesRoot.getChildren().add(dis.getRoot());
+//                    disentegrated = true;
+//                    System.out.println("detected");
+//                }
+//            } else if (status == 2) {
+//                System.out.println("STAR STAR");
+//                StarCollected col = new StarCollected(pl, 5);
+//
+//                ObstaclesRoot.getChildren().add(col.getRoot());
+//                col.getAnimation().play();
+//
+//                ObstaclesRoot.getChildren().remove(node.getRoot());
+//                toBeRemoved = node;
+//
+//                curscore++;
+//                String s = "" + curscore;
+//                score.setText(s);
+//            } else if (status == 3) {
+//            }
+//        }
+//        if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
+//    }
 
     GameplayChallenges (int challengeNo ,int height, double ratio) {
         ObstaclesRoot = new Group();
-        initiateChallenge(challengeNo, 200);
+        initiateChallenge(challengeNo, 500);
 
         pl = initiatePlayer();
         ObstaclesRoot.getChildren().add(pl.getBall());
@@ -147,6 +150,58 @@ public class GameplayChallenges implements Serializable {
         gameLoop.setCycleCount(Timeline.INDEFINITE);
         gameLoop.play();
         mainScene.setFill(Color.web("272727"));
+    }
+    void handleCollisions(Player  pl) {
+
+        GameElement toBeRemoved = null;  // remove star and colorchanger
+//        System.out.println(obstacles.size()+" "+ObstaclesRoot.getChildren().size());
+        for (GameElement node : obstacles ) {
+            // detecting collision goes here.
+            int status = node.checkCollision(pl);
+//            int status  = 3;
+            if (status < 0) {
+                if (!disentegrated) {
+                    //                    System.out.print("circle ");
+                    Disintegration dis =  new Disintegration(pl, 10);
+                    dis.getAnimation().play();
+                    if(node.getClass().getName().equals("Sample.FinishLine")){
+                        Label l2= new Label("Challenge Completed");
+                    }
+                    else{
+                        Label l2= new Label("You lost");
+                    }
+                    ObstaclesRoot.getChildren().add(dis.getRoot());
+                    disentegrated = true;
+                    System.out.println("detected");
+//                    initiateDeathSequence () ;
+                    toBeRemoved = node;
+                    ObstaclesRoot.getChildren().remove(node.getRoot());
+                }
+            }
+            else if (status == 1) {
+                System.out.println("STAR STAR");
+                StarCollected col =  new StarCollected(pl, 5);
+                col.getAnimation().play();
+
+                curscore++;
+                String s= "" +curscore;
+                score.setText(s);
+
+                ObstaclesRoot.getChildren().add(col.getRoot());
+                ObstaclesRoot.getChildren().remove(node.getRoot());
+
+
+                toBeRemoved = node;
+            }
+            else if (status == 2) {
+                System.out.println("COLOR CHANGER");
+                pl.changeColor();
+                ObstaclesRoot.getChildren().remove(node.getRoot());
+                toBeRemoved = node;
+            }
+
+        }
+        if (toBeRemoved!=null) obstacles.remove(toBeRemoved);
     }
 
     Node makePauseButton(int x, int y) {
