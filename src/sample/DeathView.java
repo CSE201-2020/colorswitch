@@ -45,13 +45,29 @@ public class DeathView {
     }
     public void goToHome(MouseEvent event) throws IOException {
         System.out.println("hello");
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "sample.fxml"
+                )
+        );
+        AnchorPane pane=null;
+        try {
+             pane= loader.load();
+            System.out.println("got iitttt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Group MainRoot = new Group();
         CircleObstacle o1 = new CircleObstacle(15,-1,10,160,110);
         CircleObstacle o2 = new CircleObstacle(15,1,10,240,110);
-        CircleObstacle outerc = new CircleObstacle(70,1,10,200,350);
-        CircleObstacle innerc = new CircleObstacle(50,-1,10,200,350);
-        CircleObstacle lastc = new CircleObstacle(90,-1,10,200,350);
+        o1.getAnimation().setRate(1.5);
+        o1.getAnimation().setRate(1.5);
+        CircleObstacle outerc = new CircleObstacle(75,1,15,200,350);
+        CircleObstacle innerc = new CircleObstacle(55,-1,15,200,350);
+        CircleObstacle lastc = new CircleObstacle(95,-1,15,200,350);
+        outerc.getAnimation().setRate(1.1);
+        innerc.getAnimation().setRate(1.3);
         Group rooto1 = o1.getRoot();
         Group rooto2 = o2.getRoot();
         Group root3 = outerc.getRoot();
@@ -61,14 +77,17 @@ public class DeathView {
 
         o1.getAnimation().play();
         o2.getAnimation().play();
+//        outerc.getAnimation().setRate(0.5);
         outerc.getAnimation().play();
+//        innerc.getAnimation().setRate(0.5);
         innerc.getAnimation().play();
+        lastc.getAnimation().setRate(0.8);
         lastc.getAnimation().play();
         Group root = new Group();
         root.getChildren().setAll(pane);
         root.getChildren().add(MainRoot);
 
-        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
+//        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
         // testing .... actually set old scene
         if (gameplay != null) {
             this.gameplay.getMainScene().setRoot(root);
@@ -76,6 +95,7 @@ public class DeathView {
         if (gameplay0 != null) {
             this.gameplay0.getMainScene().setRoot(root);
         }
+        this.gameplay0.hidePopup();
 
     }
     public void retry() {

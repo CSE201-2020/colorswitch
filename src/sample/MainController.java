@@ -67,7 +67,7 @@ public class MainController {
         System.out.print("hello ");
         if (createdNew) {
             current = makeNewUser(textField.getText());
-            System.out.println(textField.getText());
+            System.out.println("get text "+textField.getText());
         }
 
         // need to make the main page user specific

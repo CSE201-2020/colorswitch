@@ -99,7 +99,7 @@ public class  Main extends Application {
             out.writeObject(userArrayList);
         }
         catch (Exception e){
-            System.out.println(e);
+            System.out.println("Exception "+e);
         }
         finally {
             out.close();

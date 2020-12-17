@@ -81,7 +81,7 @@ public class ObstacleFactory {
                 break;
             case 2:
                 PosY -= tempH +30;
-                OBS.add(new CircleThingy(14,1,center,PosY,0));
+                OBS.add(new CircleThingy(16,1,center,PosY,0));
                 newstar=new Star(center, PosY, Color.AZURE,1.1);
                 OBS.add(newstar);
                 System.out.println("Circle Thingy 0");
@@ -89,7 +89,7 @@ public class ObstacleFactory {
                 break;
             case 3:
                 PosY -= tempH+20;
-                OBS.add(new CircleThingy(14,1,center,PosY,1));
+                OBS.add(new CircleThingy(16,1,center,PosY,1));
                 newstar=new Star(center, PosY, Color.AZURE,1.1);
                 OBS.add(newstar);
                 System.out.println("Circle Thingy 1");
