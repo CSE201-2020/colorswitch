@@ -131,6 +131,7 @@ public class Gameplay {
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
+
                                 double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
                                 //postion of ball from top of screen .
                                 if (yPos < -425) tt.play();
@@ -242,7 +243,6 @@ public class Gameplay {
 //        ObstaclesRoot.getChildren().add(newstar.getRoot());
         return N.getDist();
     }
-
     void initiateDeathSequence () {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
@@ -280,20 +280,6 @@ public class Gameplay {
 
 
     }
-    class delayTask extends TimerTask {
-        StarCollected col;
-        delayTask(StarCollected s){
-            col=s;
-        }
-        @Override
-        public void run() {
-            ObstaclesRoot.getChildren().remove(col.getRoot());
-        }
-    }
-    public void taskMaker (int seconds,StarCollected col) {
-        Timer timer = new Timer();
-        timer.schedule(new delayTask(col), seconds * 1000);
-    }
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
@@ -325,7 +311,7 @@ public class Gameplay {
 
                 ObstaclesRoot.getChildren().add(col.getRoot());
                 ObstaclesRoot.getChildren().remove(node.getRoot());
-                taskMaker(2,col);
+
 
                 toBeRemoved = node;
             }

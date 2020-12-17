@@ -34,7 +34,7 @@ public class Disintegration {
 
         this.animation = new ParallelTransition();
         for (int i =0;i<N_PIECES; i++) {
-            int radius = rand.nextInt(5) + 2;
+            int radius = rand.nextInt(5) + 7;
 
             System.out.println("Disintegration "+"X "+initial_x+" "+initial_y);
             Circle smaller = new Circle(initial_x,initial_y, radius);
@@ -59,7 +59,7 @@ public class Disintegration {
 //                    final Bounds bounds = canvas.getBoundsInLocal();
                     final boolean atRightBorder = smaller.getLayoutX() >= (200);
                     final boolean atLeftBorder = smaller.getLayoutX() <= (-200);
-                    final boolean down = smaller.getBoundsInParent().getCenterY() >= (700);
+                    final boolean down = smaller.getBoundsInParent().getCenterY() >= (2000);
                     if (down) {
                         animation.stop();
                     }
@@ -69,7 +69,7 @@ public class Disintegration {
                 }
             }));
 
-            loop.setCycleCount(20000);
+            loop.setCycleCount(500);
             this.animation.getChildren().add(loop);
 
         }
