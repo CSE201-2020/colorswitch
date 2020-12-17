@@ -17,17 +17,18 @@ public class DoublePlusObstacle extends Obstacle {
 
     final private Group root;
     private ParallelTransition animation;
+    private PlusObstacle left;
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
     public DoublePlusObstacle(int radius, int direction, int thickness, int posX, int posY) {
         // Creating Circle
         root = new Group();
-//        PlusObstacle left = new CircleObstacle(radius, direction, thickness,center + radius + thickness, posY);
-//        PlusObstacle right = new CircleObstacle(radius, -direction, thickness,center - radius - thickness, posY);
-//        root.getChildren().add(left.getRoot());
-//        root.getChildren().add(right.getRoot());
+        left = new PlusObstacle(radius, direction, thickness,center + radius + thickness -4, posY);
+        PlusObstacle right = new PlusObstacle(radius, -direction, thickness,center - radius - thickness+4, posY,true);
+        root.getChildren().add(left.getRoot());
+        root.getChildren().add(right.getRoot());
 
-//        animation =
-//                new ParallelTransition(left.getAnimation(), right.getAnimation());
+        animation =
+                new ParallelTransition(left.getAnimation(), right.getAnimation());
 //        animation.play();
     }
 
@@ -40,7 +41,12 @@ public class DoublePlusObstacle extends Obstacle {
     }
 
     public int checkCollision(Player player) {
-        return 0;
+        if(left.checkCollision(player,true)==-1){
+            this.animation.pause();
+            return -1;
+        }
+        else
+            return 0;
     }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {

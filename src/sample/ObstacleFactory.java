@@ -42,9 +42,9 @@ public class ObstacleFactory {
     static double obrate=1;
     static public OB_dist CreateRandomObstacle (int preset, int PosY , int curscore) {
         ArrayList<GameElement> OBS = new ArrayList<GameElement>();
-        if(curscore<10){
+        if(curscore<5){
             if(preset>=8){
-                preset-=1;
+                preset-=3;
             }
         }
         int scoreintens=curscore/10;
@@ -131,7 +131,7 @@ public class ObstacleFactory {
                 OBS.add(hor0);
                 OBS.add(newstar);
                 System.out.println("hori");
-                PosY -= (80);
+                PosY -= (d);
                 break;
             case 8:
                 PosY -= temp2H+100;
@@ -163,6 +163,17 @@ public class ObstacleFactory {
                 OBS.add(c3);
                 OBS.add(c2);
                 PosY-=(120 + d);
+                break;
+
+            case 10:
+                PosY -= 65;
+                DoublePlusObstacle c10d1=new DoublePlusObstacle(60,1,20,center,PosY);
+                c10d1.getAnimation().setRate(obrate);
+                OBS.add(c10d1);
+                newstar=new Star(center, PosY-50, Color.AZURE,1.1);
+                OBS.add(newstar);
+                PosY -= (65 + d);
+                System.out.println("Double Circle");
                 break;
 
 

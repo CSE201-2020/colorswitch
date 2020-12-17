@@ -92,7 +92,7 @@ public class CircleObstacle extends Obstacle {
             rect.setFill(Color.TRANSPARENT);
             rect.setStrokeWidth(thickness);
             root.getChildren().add(rect);
-
+            this.arcArrayList.add(rect);
         }
 
         //Instantiating RotateTransition class
@@ -150,6 +150,21 @@ public class CircleObstacle extends Obstacle {
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
                     player.getAnimation().pause();
                     this.animation.pause();
+
+                    return -1;
+                }
+            }
+        }
+        return 0;
+    }
+    public int checkCollision(Player player, boolean doublecircle) {
+        Circle ball = player.getBall();
+        for (Arc arc : this.arcArrayList){
+            Shape intersected = Shape.intersect(arc,ball);
+            if (!arc.getStroke().equals(ball.getFill())) {
+                if (intersected.getBoundsInLocal().getWidth() != -1) {
+                    player.getAnimation().pause();
+//                    this.animation.pause();
 
                     return -1;
                 }

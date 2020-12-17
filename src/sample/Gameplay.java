@@ -202,8 +202,8 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(10);
-//        preset = 8;
+        int preset = rand.nextInt(11 );
+        preset = 7 ;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY,curscore);
         ArrayList<GameElement> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
@@ -364,7 +364,8 @@ public class Gameplay {
         star2.getAnimation().play();
         star3.getAnimation().play();
        // test.getAnimation().play();
-
+        obs.getAnimation().setRate(0.7);
+        obs2.getAnimation().setRate(0.7);
         obstacles.add(obs);
         obstacles.add(obs2);
         obstacles.add(star1);

@@ -16,13 +16,14 @@ public class DoubleCircleObstacle extends Obstacle {
     int center = 200;
 
     final private Group root;
+    private CircleObstacle left;
     final private ParallelTransition animation;
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
     public DoubleCircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
         // Creating Circle
         root = new Group();
-        CircleObstacle left = new CircleObstacle(radius, direction, thickness,center + radius + thickness, posY,true);
-        CircleObstacle right = new CircleObstacle(radius, -direction, thickness,center - radius - thickness, posY, false);
+         left = new CircleObstacle(radius, direction, thickness,center + radius + thickness, posY);
+        CircleObstacle right = new CircleObstacle(radius, -direction, thickness,center - radius - thickness, posY, true);
         root.getChildren().add(left.getRoot());
         root.getChildren().add(right.getRoot());
 
@@ -40,6 +41,13 @@ public class DoubleCircleObstacle extends Obstacle {
     }
 
     public int checkCollision(Player player) {
+
+        if(this.left.checkCollision(player,true)==-1){
+            animation.pause();
+            System.out.println("COLIDEDEDEDEDED");
+            return -1;
+        }
+
         return 0;
     }
 //    @Override

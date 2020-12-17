@@ -128,10 +128,11 @@ public class CircleThingy extends Obstacle {
         for (Circle arc : this.circleArrayList){
             Shape intersected = Shape.intersect(arc,ball);
             if (!arc.getFill().equals(ball.getFill())) {
-//                System.out.print(arc.getStroke()+" "+ball.getFill());
+                System.out.print(arc.getStroke()+" "+ball.getFill());
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
 //                    player.getAnimation().pause();
 //                    this.animation.pause();
+                    return -1;
                 }
             }
         }
