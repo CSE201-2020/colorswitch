@@ -135,6 +135,7 @@ public class Gameplay {
                         new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
+
                                 double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
                                 //postion of ball from top of screen .
                                 if (yPos < -425) tt.play();
@@ -209,7 +210,8 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(2 )+2;
+        System.out.println("In add new OBstacle");
+        int preset = rand.nextInt(10 );
 //        preset = 3 ;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY,curscore);
         ArrayList<GameElement> NEW = N.getObstacleList();
@@ -247,7 +249,6 @@ public class Gameplay {
 //        ObstaclesRoot.getChildren().add(newstar.getRoot());
         return N.getDist();
     }
-
     void initiateDeathSequence () {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
@@ -256,6 +257,7 @@ public class Gameplay {
         );
         try {
             paneDeath = loader.load();
+            System.out.println("got iitttt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -265,20 +267,25 @@ public class Gameplay {
 
         popup = new Popup();
         if (paneDeath != null ) {
-            System.out.println(popup.getContent().setAll(paneDeath));
+            System.out.println("popup "+popup.getContent().setAll(paneDeath));
         }
         Stage stage=(Stage) this.getMainScene().getWindow();
         if (!popup.isShowing()) {
             pauseEverything();
-            popup.show(stage);
+
             ColorAdjust colorAdjust2 = new ColorAdjust();
             colorAdjust2.setBrightness(-0.6);
+            try{
+            popup.show(stage);
+            }
+            catch (Exception e){
+                System.out.println("Problemmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+            }
             mainScene.getRoot().setEffect(colorAdjust2);
         }
 
 
     }
-
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
@@ -311,6 +318,8 @@ public class Gameplay {
 
                 ObstaclesRoot.getChildren().add(col.getRoot());
                 ObstaclesRoot.getChildren().remove(node.getRoot());
+
+
                 toBeRemoved = node;
             }
             else if (status == 2) {
@@ -364,8 +373,9 @@ public class Gameplay {
                             pauseEverything();
                             ColorAdjust colorAdjust2 = new ColorAdjust();
                             colorAdjust2.setBrightness(-0.6);
-                            mainScene.getRoot().setEffect(colorAdjust2);
                             popup.show(stage);
+                            mainScene.getRoot().setEffect(colorAdjust2);
+                          
                         }
 
                     }

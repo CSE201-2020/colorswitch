@@ -50,9 +50,9 @@ public class Controller {
         gameplay = new Gameplay(700 , 9/(16.0), this.user);
 //        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
 //        gameplay.init(datatable)
-        System.out.println(node);
-        System.out.println(gameplay);
-        System.out.println(stage);
+        System.out.println("Node"+ node);
+        System.out.println("gameplay +"+ gameplay);
+        System.out.println("Stage"+stage);
 
         stage.setTitle("gameplay");
         stage.setScene(gameplay.getMainScene());
@@ -102,12 +102,12 @@ public class Controller {
     }
     @FXML
     void loadChallenges(MouseEvent event) throws Exception{
-       AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
+       AnchorPane pane2= FXMLLoader.load(getClass().getResource("Challenges.fxml"));
 
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
         Scene mainScene =new Scene(pane2, 400, 700);
-        stage.setTitle("gameplay");
+        stage.setTitle("Challenges");
         stage.setScene(mainScene);
         stage.show();
     }
@@ -118,4 +118,5 @@ public class Controller {
         Stage stage=(Stage) node.getScene().getWindow();
         stage.close();
     }
+
 }

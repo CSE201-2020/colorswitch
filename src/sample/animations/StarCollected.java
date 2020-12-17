@@ -36,6 +36,7 @@ public class StarCollected {
 
             int distX = rand.nextInt(40) - 100;
             starSVG.setTranslateX(distX);
+            starSVG.setTranslateY(initial_y-260);
             starSVG.setFill(Color.AZURE);
             double opacity = (rand.nextInt(50) + 50.0 )/(100);
             starSVG.setOpacity(opacity);
@@ -56,6 +57,12 @@ public class StarCollected {
             this.animation.getChildren().add(lateralTransition);
             this.root.getChildren().add(starSVG);
         }
+        FadeTransition fd = new FadeTransition();
+        fd.setDuration(Duration.millis(1000));
+        fd.setFromValue(10);
+        fd.setToValue(0.00001);
+        fd.setNode(this.root);
+        fd.play ();
         Text t = new Text(initial_x -50, initial_y - 50, "+1");
         t.setFont(new Font(20));
         this.root.getChildren().add(t);

@@ -76,6 +76,7 @@ public class PauseView {
         if (gameplay0 != null) {
             this.gameplay0.getMainScene().setRoot(root);
         }
+        gameplay0.hidePopup();
 
     }
     public void hidePopup() {
