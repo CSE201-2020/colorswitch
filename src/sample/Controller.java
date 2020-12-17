@@ -112,4 +112,10 @@ public class Controller {
         stage.show();
     }
 
+    @FXML
+    void exitGame (MouseEvent event) {
+        Node node=(Node) event.getSource();
+        Stage stage=(Stage) node.getScene().getWindow();
+        stage.close();
+    }
 }
