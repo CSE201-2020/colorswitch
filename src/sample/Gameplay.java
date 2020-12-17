@@ -78,7 +78,7 @@ public class Gameplay {
 
     final private transient Random rand = new Random();
     final private transient int presetLength = 7;
-    int currentPos = -1600 ; // TODO
+    int currentPos = -600 ; // TODO
 
     boolean disentegrated = false;
     Player pl; // TODO
@@ -202,10 +202,10 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(presetLength);
+        int preset = rand.nextInt(10);
 //        preset = 8;
-        ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY);
-        ArrayList<Obstacle> NEW = N.getObstacleList();
+        ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY,curscore);
+        ArrayList<GameElement> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
         int NEW_LENGTH = NEW.size();
         // gotta delete NEW_LENGTH from queue to save memory.
@@ -215,7 +215,7 @@ public class Gameplay {
 //        }
         //check queue size ::
         //System.out.println(obstacles.size()+" "+" "+ObstaclesRoot.getChildren().size());
-        for (Obstacle obx: NEW) {
+        for (GameElement obx: NEW) {
             obstacles.add(obx);
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
@@ -228,15 +228,15 @@ public class Gameplay {
             ObstaclesRoot.getChildren().add(newcolorchanger.getRoot());
         }
 
-        Star newstar=new Star(center, posY+215,Color.AZURE,1.1);
-        double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
-        if(preset==2 || preset== 3 )
-            newstar.setposY(posY+215+tempH);
-        if(preset==7)
-            newstar.setposY(posY-20);
-        newstar.getAnimation().play();
-        obstacles.add(newstar);
-        ObstaclesRoot.getChildren().add(newstar.getRoot());
+//        Star newstar=new Star(center, posY+215,Color.AZURE,1.1);
+//        double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
+//        if(preset==2 || preset== 3 )
+//            newstar.setposY(posY+215+tempH);
+//        if(preset==7)
+//            newstar.setposY(posY-20);
+//        newstar.getAnimation().play();
+//        obstacles.add(newstar);
+//        ObstaclesRoot.getChildren().add(newstar.getRoot());
         return N.getDist();
     }
 
@@ -245,8 +245,8 @@ public class Gameplay {
         GameElement toBeRemoved = null;  // remove star and colorchanger
         for (GameElement node : obstacles ) {
             // detecting collision goes here.
-//            int status = node.checkCollision(pl);
-            int status  = 3;
+            int status = node.checkCollision(pl);
+//            int status  = 3;
             if (status < 0) {
                  if (!disentegrated) {
  //                    System.out.print("circle ");

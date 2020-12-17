@@ -6,10 +6,7 @@ import javafx.animation.RotateTransition;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import sample.Obstacle;
@@ -28,6 +25,7 @@ public class PlusObstacle extends Obstacle {
         for (int i = 0 ;i < 4; ++i) {
             Line line = new Line();
             line.setStrokeWidth(thickness);
+            line.setStrokeLineCap(StrokeLineCap.ROUND);
             line.setStartX(posX);
             line.setStartY(posY);
             line.setStroke(colors[i]);
