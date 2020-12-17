@@ -12,6 +12,8 @@ package sample.Obstacles;
         import sample.Obstacle;
         import sample.Player;
 
+        import java.util.ArrayList;
+
 public class DoublePlusObstacle extends Obstacle {
     int center = 200;
 
@@ -41,6 +43,11 @@ public class DoublePlusObstacle extends Obstacle {
 
     public int checkCollision(Player player) {
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return null;
     }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {

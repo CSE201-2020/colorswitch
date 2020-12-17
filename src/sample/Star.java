@@ -7,14 +7,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Star extends GameElement{
     final private Group root;
     final private ScaleTransition animation;
     final private int offset = 10;
     private SVGPath star = new SVGPath();
     int inactivityCycleCount = 450;
+    ArrayList<Object> args = new ArrayList<>();
 
     Star(int posX, int posY, Color color, double initialScale) {
+        args.add(posX);args.add(posY);args.add(initialScale);
         root = new Group();
         //svg for star
 
@@ -51,6 +55,11 @@ public class Star extends GameElement{
     public int checkCollision(Player player) {
         if (this.root.intersects(player.getBall().getBoundsInParent())) return 1;
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 
     public void setposY(double v) {

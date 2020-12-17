@@ -12,16 +12,22 @@ import javafx.util.Duration;
 import sample.Obstacle;
 import sample.Player;
 
+import java.util.ArrayList;
+
 public class DoubleCircleObstacle extends Obstacle {
     int center = 200;
 
     final private Group root;
     final private ParallelTransition animation;
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
+
+    ArrayList<Object> args = new ArrayList<>();
+    CircleObstacle left;
     public DoubleCircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
+        args.add(radius);args.add(direction);args.add(thickness);args.add(posX);args.add(posY);
         // Creating Circle
         root = new Group();
-        CircleObstacle left = new CircleObstacle(radius, direction, thickness,center + radius + thickness, posY,true);
+        left = new CircleObstacle(radius, direction, thickness,center + radius + thickness, posY,true);
         CircleObstacle right = new CircleObstacle(radius, -direction, thickness,center - radius - thickness, posY, false);
         root.getChildren().add(left.getRoot());
         root.getChildren().add(right.getRoot());
@@ -40,7 +46,12 @@ public class DoubleCircleObstacle extends Obstacle {
     }
 
     public int checkCollision(Player player) {
-        return 0;
+        return left.checkCollision(player );
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {

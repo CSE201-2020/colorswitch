@@ -28,6 +28,8 @@ public class Controller {
 
     @FXML
     private ImageView loadGame;
+    @FXML
+    private ImageView trophy;
     Gameplay gameplay;
     User user ;
     static ArrayList<User> copyList = new ArrayList<>();
@@ -70,6 +72,17 @@ public class Controller {
 
     @FXML
     void loadGame(MouseEvent event) throws Exception{
+       AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
+
+        Node node=(Node) event.getSource();
+        Stage stage=(Stage) node.getScene().getWindow();
+        Scene mainScene =new Scene(pane2, 400, 700);
+        stage.setTitle("gameplay");
+        stage.setScene(mainScene);
+        stage.show();
+    }
+    @FXML
+    void loadChallenges(MouseEvent event) throws Exception{
        AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
 
         Node node=(Node) event.getSource();

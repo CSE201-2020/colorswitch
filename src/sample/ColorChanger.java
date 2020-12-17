@@ -14,8 +14,10 @@ import java.util.Arrays;
 public class ColorChanger extends GameElement{
     final private Group root;
     final private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")));
+    ArrayList<Object> args = new ArrayList<>();
 
     public ColorChanger(int posX, int posY) {
+        args.add(posX);args.add(posY);
         this.root = new Group();
         for (int i = 0 ;i < 4; ++i) {
             Arc rect = new Arc(posX,posY,15,15,90*i,90);
@@ -41,5 +43,10 @@ public class ColorChanger extends GameElement{
     public int checkCollision(Player player) {
         if (this.root.intersects(player.getBall().getBoundsInParent())) return 2;
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 }
