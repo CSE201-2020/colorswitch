@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import sample.Obstacles.CircleObstacle;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 public class PauseView {
     private GameplayChallenges gameplay;
     private Gameplay gameplay0;
+    @FXML
+    private SVGPath saveButton;
     public void initData (GameplayChallenges gameplay) {
         this.gameplay = gameplay;
     }
@@ -63,6 +66,17 @@ public class PauseView {
         }
         if (gameplay0 != null) {
             this.gameplay0.hidePopup();
+        }
+    }
+
+    public void saveGame () {
+        if (gameplay != null) {
+            this.gameplay.hidePopup();
+            System.out.println("cant hide gameplay");
+        }
+        if (gameplay0 != null) {
+            this.gameplay0.hidePopup();
+            this.gameplay0.saveGame();
         }
     }
 }

@@ -10,7 +10,7 @@
 <AnchorPane fx:id="mainRoot" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
 
-        <ImageView fx:id="loadGame" fitHeight="109.0" fitWidth="200.0" layoutX="100.0" layoutY="489.0" onMouseClicked="#loadGame" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="loadGame" fitHeight="109.0" fitWidth="200.0" layoutX="100.0" layoutY="489.0" onMouseClicked="#latestGame" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../assets/loadgame.png" />
             </image>

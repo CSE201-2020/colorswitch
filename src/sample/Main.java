@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -18,11 +20,15 @@ import javafx.stage.Stage;
 import sample.Obstacles.CircleObstacle;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class  Main extends Application {
     private static User currentd= new User();
     private static User copy;
+
+    private static ArrayList<User> userArrayList = new ArrayList<>();
+    private static ArrayList<User> copyList;
     final private int height = 700 ;
     final private double ratio = (4/7.0) ;
 
@@ -32,16 +38,22 @@ public class  Main extends Application {
         MediaPlayer player = new MediaPlayer(media);
 //        player.play();
 
-        AnchorPane root = FXMLLoader.load(getClass().getResource("login.fxml"));
-        System.out.println("Enter Username : ");
-        Scanner sc= new Scanner(System.in);
-//        String s=sc.next();
-        currentd.setUsername("Bhavesh");
-        currentd.setTotalstars(0);
-        serialize();
-        deserialize();
-        System.out.println("Copy Stars are : " + copy.getTotalstars());
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "login.fxml"
+                )
+        );
+        AnchorPane root= loader.load();
+        MainController controller = loader.getController();
 
+        // get data from db to copyList and then copy it to userArrayList
+        deserializeList("users_main");
+        copyList.forEach(user -> {
+            userArrayList.add(user);
+        });
+
+        ObservableList<User> items = FXCollections.observableArrayList (copyList);
+        controller.initialize(items);
 
         CircleObstacle o1 = new CircleObstacle(15,-1,5,150,62);
         CircleObstacle o2 = new CircleObstacle(15,1,5,230,62);
@@ -51,7 +63,7 @@ public class  Main extends Application {
         MainRoot.getChildren().addAll(rooto1,rooto2);
         o1.getAnimation().play();
         o2.getAnimation().play();
-//        root.getChildren().setAll(root);
+
         root.getChildren().add(MainRoot);
         primaryStage.setTitle("Game");
         primaryStage.setScene(new Scene(root, height*ratio, height));
@@ -63,36 +75,55 @@ public class  Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    public static void serialize() throws IOException {
+
+    public static void serializeList(String username) throws IOException {
         ObjectOutputStream out=null;
+
         try {
-            out = new ObjectOutputStream (new FileOutputStream("UserL.txt"));
-            out.writeObject(currentd);
-            System.out.println(currentd.getTotalstars());
+            File myObj = new File("db/"+username+".txt");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        try {
+            out = new ObjectOutputStream (new FileOutputStream("db/"+username+".txt"));
+            System.out.println(userArrayList);
+            out.writeObject(userArrayList);
         }
         catch (Exception e){
-            System.out.println("Exception");
+            System.out.println(e);
         }
         finally {
             out.close();
             System.out.println("Saved!");
         }
     }
-    public static void deserialize() throws ClassNotFoundException, FileNotFoundException, IOException{
+
+    public static void deserializeList(String username) throws ClassNotFoundException, FileNotFoundException, IOException{
         ObjectInputStream in = null;
         try {
-            in=new ObjectInputStream (new FileInputStream("UserL.txt"));
-            copy=(User) in.readObject();
+            in=new ObjectInputStream (new FileInputStream("db/"+username+".txt"));
+            copyList = (ArrayList<User>) in.readObject();
             in.close();
-            System.out.println("copied");
+            System.out.println("copied"+copyList);
         }
         catch (FileNotFoundException e){
-            copy=new User();
+            copyList = new ArrayList<User>();
             System.out.println("here");
         }
         catch (NullPointerException e) {
-            copy=new User();
+            copyList = new ArrayList<User>();
             System.out.println("This user does not exist in the database");
         }
+    }
+
+    public static ArrayList<User> getUserArrayList() {
+        return userArrayList;
     }
 }

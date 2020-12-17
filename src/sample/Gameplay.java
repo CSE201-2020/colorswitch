@@ -35,27 +35,67 @@ import sample.animations.StarCollected;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
-public class Gameplay implements Serializable {
-    ObstacleFactory Factory ;
-    Random rand = new Random();
-    final int presetLength = 9;
-    int currentPos = -600 ;
+public class Gameplay {
+
+    public static class DB implements Serializable {
+        private static final long serialVersionUID = 7368175650914175345L;
+
+      final int presetLength = 9;
+      int currentPos = -600 ;
+      transient Player pl; // TODO // divide into posy, color
+        Queue<sample.DB> obstacles= new LinkedList<>(); // TODO // divide into posY, rotation
+        int curscore=0;  // TODO
+        DB() {
+        }
+        void updateValues(Queue<sample.DB> obstacles, int cur) {
+            this.obstacles = new LinkedList<>(obstacles);
+            this.curscore = cur;
+            System.out.println("savingsavingsavingsavingsavingsavingsavingsavingsavingsavingsaving"+obstacles);
+        }
+        void initializeObstacles(Group ObstaclesRoot) {
+            if (this.obstacles == null) return;
+            for (sample.DB obx: this.obstacles) {
+                obx.initializeObstacle(ObstaclesRoot);
+            }
+        }
+        @Override
+        public String toString () {
+            String result = "";
+            result += "\ncurrentPos: "+ currentPos;
+            result += "\npl: "+ pl;
+            result += "\nobstacles: "+ obstacles;
+            result += "\ncurrScore: "+ curscore;
+//        result += "\ngamesplayed: "+ gamesplayed;
+//        result += "\ngamessaves: "+ gamessaves;
+            return result;
+        }
+
+    }
+    DB gameInfo = new DB();
+
+
+    final private transient Random rand = new Random();
+    final private transient int presetLength = 7;
+    int currentPos = -1600 ; // TODO
+
     boolean disentegrated = false;
-    Player pl;
+    Player pl; // TODO
     Popup popup;
     private Scene mainScene;
-    Queue<GameElement> obstacles= new LinkedList<>();
+    Queue<GameElement> obstacles= new LinkedList<>(); // TODO
     Group ObstaclesRoot;
-    int center = 200;
+    transient int center = 200;
     Label score;
-    int curscore=0;
+    int curscore=0;  // TODO
+    transient User user;
 
-    Gameplay (int height, double ratio) {
+
+    Gameplay (int height, double ratio, User user) {
+        this.user = user;
+        System.out.println(user);
+
         ObstaclesRoot = initiateTestObstacles();
         pl = initiatePlayer();
 
@@ -69,6 +109,63 @@ public class Gameplay implements Serializable {
         MainRoot.getChildren().add(makeStarCount(58,25));
         MainRoot.getChildren().add(score);
 
+        MainRoot.getChildren().add(ObstaclesRoot);
+
+
+        double speed = (1200)/(6000.0);
+        float dist = 1200f;
+        TranslateTransition tt = new TranslateTransition(Duration.millis(dist/speed), ObstaclesRoot);
+        tt.setByY(dist);
+        tt.setCycleCount(1);
+        tt.setInterpolator(Interpolator.LINEAR);
+
+        mainScene =new Scene(MainRoot, height*ratio, height);
+
+        mainScene.addEventHandler(KeyEvent.KEY_PRESSED,eventHandler);
+
+        Timeline gameLoop = new Timeline(
+                new KeyFrame(Duration.millis(16),  // could be improved for performance
+
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                double yPos =  pl.getBall().getTranslateY()+ ObstaclesRoot.getTranslateY();
+                                //postion of ball from top of screen .
+                                if (yPos < -425) tt.play();
+                                else tt.pause();
+                                if(yPos > -10) pl.getAnimation().pause();
+                                if (pl.getBall().getTranslateY() < currentPos) currentPos = addNewObstacles(currentPos);
+
+                                handleCollisions(pl);
+                            }
+                        }));
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.play();
+        mainScene.setFill(Color.web("272727"));
+    }
+
+    Gameplay (int height, double ratio, User user, DB gameInfo) {
+        this.user = user;
+        System.out.println(user);
+        System.out.println("Game Info found !:"+ gameInfo);
+
+        ObstaclesRoot = new Group();
+        gameInfo.initializeObstacles(ObstaclesRoot);
+        pl = initiatePlayer();
+        ObstaclesRoot.getChildren().add(pl.getBall());
+        Group MainRoot = new Group();
+
+        this.currentPos = gameInfo.currentPos;
+
+        this.curscore = gameInfo.curscore;
+        score = new Label(""+gameInfo.curscore);
+        score.setFont(Font.font("Bookshelf Symbol 7",40));
+        score.setTextFill(Paint.valueOf("#fff9f9"));
+        score.setTranslateY(5);
+
+        MainRoot.getChildren().add(makePauseButton(80,-250));
+        MainRoot.getChildren().add(makeStarCount(60,25));
+        MainRoot.getChildren().add(score);
         MainRoot.getChildren().add(ObstaclesRoot);
 
 
@@ -187,6 +284,7 @@ public class Gameplay implements Serializable {
     Node makePauseButton(int x, int y) {
         String svg = "m282.824 0c-155.947 0-282.824 126.877-282.824 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824-126.877-282.824-282.824-282.824zm-35.353 388.883h-70.706v-212.118h70.706zm141.412 0h-70.706v-212.118h70.706z";
         SVGPath pause = new SVGPath();
+        pause.setPickOnBounds(true);
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         "PauseView.fxml"
@@ -338,6 +436,22 @@ public class Gameplay implements Serializable {
         this.popup.hide();
         playEverything();
     }
+
+    public void saveGame() {
+        Queue<sample.DB> q = new LinkedList<>();
+        this.obstacles.forEach(gameElement -> {
+            gameElement.obsInfo.updateValues(gameElement);
+            q.add(gameElement.obsInfo);
+        });
+        this.gameInfo.updateValues(q,this.curscore);
+        this.user.getGamelist().put(new Date(), this.gameInfo);
+        try {
+            Main.serializeList("users_main");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Scene getMainScene() {
         return mainScene;

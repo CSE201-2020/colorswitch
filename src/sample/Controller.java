@@ -14,6 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+
 public class Controller {
     @FXML
     private AnchorPane mainRoot;
@@ -24,12 +29,16 @@ public class Controller {
     @FXML
     private ImageView loadGame;
     Gameplay gameplay;
+    User user ;
+    static ArrayList<User> copyList = new ArrayList<>();
+    void initUserSpace (User user) {
+        this.user = user;
+    }
     @FXML
     void startGame(MouseEvent event) throws Exception {
-//        AnchorPane pane= FXMLLoader.load(getClass().getResource("Almanac.fxml"));
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
-        gameplay = new Gameplay(700 , 9/(16.0));
+        gameplay = new Gameplay(700 , 9/(16.0), this.user);
 //        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
 //        gameplay.init(datatable)
         System.out.println(node);
@@ -39,13 +48,26 @@ public class Controller {
         stage.setTitle("gameplay");
         stage.setScene(gameplay.getMainScene());
         stage.show();
-        //        VBox layout1= new VBox(20);
-//
-//        Label gameplay = new Label("Gameplay here");
-//        layout1.getChildren().add(gameplay);
-//
-//        mainRoot.getChildren().setAll(layout1);
     }
+    @FXML
+    void latestGame(MouseEvent event) throws Exception {
+        Node node=(Node) event.getSource();
+        Stage stage=(Stage) node.getScene().getWindow();
+        //deserialize from this.user
+        Map.Entry<Date, Gameplay.DB> entry = this.user.getGamelist().entrySet().iterator().next();
+        Gameplay.DB gameInfo = entry.getValue();
+        gameplay = new Gameplay(700 , 9/(16.0), this.user, gameInfo);
+//        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
+//        gameplay.init(datatable)
+        System.out.println(node);
+        System.out.println(gameplay);
+        System.out.println(stage);
+
+        stage.setTitle("gameplay");
+        stage.setScene(gameplay.getMainScene());
+        stage.show();
+    }
+
     @FXML
     void loadGame(MouseEvent event) throws Exception{
        AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
@@ -56,6 +78,6 @@ public class Controller {
         stage.setTitle("gameplay");
         stage.setScene(mainScene);
         stage.show();
-    } 
+    }
 
 }
