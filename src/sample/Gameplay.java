@@ -42,8 +42,9 @@ public class Gameplay {
     public static class DB implements Serializable {
         private static final long serialVersionUID = 7368175650914175345L;
 
-        int currentPos = -1600 ; // TODO
-        transient Player pl; // TODO // divide into posy, color
+      final int presetLength = 9;
+      int currentPos = -600 ;
+      transient Player pl; // TODO // divide into posy, color
         Queue<sample.DB> obstacles= new LinkedList<>(); // TODO // divide into posY, rotation
         int curscore=0;  // TODO
         DB() {
@@ -78,6 +79,7 @@ public class Gameplay {
     final private transient Random rand = new Random();
     final private transient int presetLength = 7;
     int currentPos = -1600 ; // TODO
+
     boolean disentegrated = false;
     Player pl; // TODO
     Popup popup;
@@ -104,7 +106,7 @@ public class Gameplay {
         score.setTextFill(Paint.valueOf("#fff9f9"));
         score.setTranslateY(5);
         MainRoot.getChildren().add(makePauseButton(80,-250));
-        MainRoot.getChildren().add(makeStarCount(60,25));
+        MainRoot.getChildren().add(makeStarCount(58,25));
         MainRoot.getChildren().add(score);
 
         MainRoot.getChildren().add(ObstaclesRoot);
@@ -200,8 +202,8 @@ public class Gameplay {
     }
 
     int addNewObstacles(int posY) {
-        int preset = rand.nextInt(5);
-//        preset = 4;
+        int preset = rand.nextInt(presetLength);
+//        preset = 8;
         ObstacleFactory.OB_dist N = ObstacleFactory.CreateRandomObstacle(preset, posY);
         ArrayList<Obstacle> NEW = N.getObstacleList();
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
@@ -218,13 +220,20 @@ public class Gameplay {
             ObstaclesRoot.getChildren().add(obx.getRoot());
             obx.getAnimation().play();
         }
-        ColorChanger newcolorchanger = new ColorChanger(center,posY-220);
-        int newcolorchance=rand.nextInt(4);
-        if(newcolorchance==3){
+        posY=N.getDist();
+        ColorChanger newcolorchanger = new ColorChanger(center,posY+75);
+        int newcolorchance=rand.nextInt(3);
+        if(newcolorchance==2){
             obstacles.add(newcolorchanger);
             ObstaclesRoot.getChildren().add(newcolorchanger.getRoot());
         }
-        Star newstar=new Star(center, posY,Color.AZURE,1.1);
+
+        Star newstar=new Star(center, posY+215,Color.AZURE,1.1);
+        double tempH = Math.pow(3,-0.5)*(23.5)* 12 / 2;
+        if(preset==2 || preset== 3 )
+            newstar.setposY(posY+215+tempH);
+        if(preset==7)
+            newstar.setposY(posY-20);
         newstar.getAnimation().play();
         obstacles.add(newstar);
         ObstaclesRoot.getChildren().add(newstar.getRoot());
@@ -236,7 +245,8 @@ public class Gameplay {
         GameElement toBeRemoved = null;  // remove star and colorchanger
         for (GameElement node : obstacles ) {
             // detecting collision goes here.
-            int status = node.checkCollision(pl);
+//            int status = node.checkCollision(pl);
+            int status  = 3;
             if (status < 0) {
                  if (!disentegrated) {
  //                    System.out.print("circle ");
@@ -339,45 +349,45 @@ public class Gameplay {
         Star star1 = new Star(center, 200,Color.AZURE,1.1);
         Star star2 = new Star(center, 0,Color.AZURE,1.1);
         Star star3 = new Star(center, -200,Color.AZURE,1.1);
-        PlusObstacle plus0 = new PlusObstacle(60,1,15,center + 60,-600);
-        PlusObstacle plus1 = new PlusObstacle(100,1,20,center - 80 ,-1000);
-        HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,18,-400,-1200);
-        CircleThingy test = new CircleThingy(15,1,center,-1600,0);
+       // PlusObstacle plus0 = new PlusObstacle(60,1,15,center + 60,-600);
+        //PlusObstacle plus1 = new PlusObstacle(100,1,20,center - 80 ,-1000);
+        HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,18,-400,-500);
+       // CircleThingy test = new CircleThingy(15,1,center,-1600,0);
         //This is the star for collection not score.
-        ColorChanger tary= new ColorChanger(center,-220);
+        ColorChanger tary= new ColorChanger(center,-400);
 
         obs.getAnimation().play();
         obs2.getAnimation().play();
-        plus0.getAnimation().play();
-        plus1.getAnimation().play();
+       // plus0.getAnimation().play();
+       // plus1.getAnimation().play();
         star1.getAnimation().play();
         star2.getAnimation().play();
         star3.getAnimation().play();
-        test.getAnimation().play();
+       // test.getAnimation().play();
 
         obstacles.add(obs);
         obstacles.add(obs2);
         obstacles.add(star1);
         obstacles.add(star2);
         obstacles.add(star3);
-        obstacles.add(plus0);
-        obstacles.add(plus1);
+      //  obstacles.add(plus0);
+      //  obstacles.add(plus1);
         obstacles.add(hor0);
 
-        obstacles.add(test);
+        //obstacles.add(test);
         obstacles.add(tary);
 
 
         Group ObstaclesRoot = new Group();
         ObstaclesRoot.getChildren().add(obs2.getRoot());
         ObstaclesRoot.getChildren().add(obs.getRoot());
-        ObstaclesRoot.getChildren().add(plus0.getRoot());
+        //ObstaclesRoot.getChildren().add(plus0.getRoot());
         ObstaclesRoot.getChildren().add(star1.getRoot());
         ObstaclesRoot.getChildren().add(star2.getRoot());
         ObstaclesRoot.getChildren().add(star3.getRoot());
         ObstaclesRoot.getChildren().add(hor0.getRoot());
-        ObstaclesRoot.getChildren().add(plus1.getRoot());
-        ObstaclesRoot.getChildren().add(test.getRoot());
+       // ObstaclesRoot.getChildren().add(plus1.getRoot());
+       // ObstaclesRoot.getChildren().add(test.getRoot());
         ObstaclesRoot.getChildren().add(tary.getRoot());
 
         return ObstaclesRoot;

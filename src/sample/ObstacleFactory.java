@@ -45,11 +45,11 @@ public class ObstacleFactory {
         switch (preset) {
             case 0:
                 PosY-=65;
-                CircleObstacle c0 = new CircleObstacle(60, -1,10, center, PosY);
-                int CircleHeight = (int)c0.getRoot().getBoundsInParent().getHeight();
-                PosY-=(d + 130);
-                CircleObstacle c1 = new CircleObstacle(60, 1,10, center, PosY);
-                OBS.add(c0);
+//                CircleObstacle c0 = new CircleObstacle(60, -1,10, center, PosY);
+//                int CircleHeight = (int)c0.getRoot().getBoundsInParent().getHeight();
+//                PosY-=(d + 130);
+                CircleObstacle c1 = new CircleObstacle(60, 1,20, center, PosY);
+//                OBS.add(c0);
                 OBS.add(c1);
                 PosY-=(65 + d);
                 break;
@@ -63,13 +63,13 @@ public class ObstacleFactory {
                 PosY -= tempH;
                 OBS.add(new CircleThingy(12,1,center,PosY,0));
                 System.out.println("Circle Thingy 0");
-                PosY -= (tempH + d);
+                PosY -= (tempH + d+10);
                 break;
             case 3:
                 PosY -= tempH;
                 OBS.add(new CircleThingy(12,1,center,PosY,1));
                 System.out.println("Circle Thingy 1");
-                PosY -= (tempH + d);
+                PosY -= (tempH + d+10);
                 break;
             case 4:
                 PosY -= temp2H;
@@ -84,9 +84,26 @@ public class ObstacleFactory {
                 System.out.println("Double Circle");
                 break;
             case 6:
-                OBS.add(new PlusObstacle(120,1,10,center + 120 ,PosY));
+                PosY-=65;
+                OBS.add(new PlusObstacle(100,1,20,center + 100 ,PosY));
                 System.out.println("Big plus");
+                PosY-=(65 +d);
                 break;
+            case 7:
+                PosY -= 10;
+                HorizontalLineObstacle hor0 = new HorizontalLineObstacle(100,1,18,-400,PosY);
+                System.out.println("hori");
+                PosY -= (10+10);
+                break;
+            case 8:
+                PosY -= tempH;
+                OBS.add(new CircleThingy(15,0 ,center,PosY,2));
+                OBS.add(new CircleThingy(12,1,center,PosY,1));
+                System.out.println("Triangle inside square");
+                PosY -= (tempH + d);
+                break;
+
+
         }
         return new OB_dist(OBS, PosY);
     }

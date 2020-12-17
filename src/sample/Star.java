@@ -52,4 +52,8 @@ public class Star extends GameElement{
         if (this.root.intersects(player.getBall().getBoundsInParent())) return 1;
         return 0;
     }
+
+    public void setposY(double v) {
+        star.setTranslateY(v-offset);
+    }
 }
