@@ -36,7 +36,7 @@ public class  Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Media media = new Media(getClass().getResource("/resources/maintheme.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(media);
-//        player.play();
+        player.play();
 
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(

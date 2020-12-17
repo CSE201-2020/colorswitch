@@ -35,6 +35,7 @@ import sample.animations.StarCollected;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class Gameplay {
@@ -459,7 +460,11 @@ public class Gameplay {
             @Override
             public void handle(KeyEvent e) {
 //                ball.setFill(ball.getFill() == Color.LIME ? Color.HOTPINK : Color.LIME);
-                pl1.handleJumpEvent();
+                try {
+                    pl1.handleJumpEvent();
+                } catch (URISyntaxException uriSyntaxException) {
+                    uriSyntaxException.printStackTrace();
+                }
             }
         };
 //        pl1.getAnimation().play();

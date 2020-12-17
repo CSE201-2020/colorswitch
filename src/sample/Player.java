@@ -4,11 +4,14 @@ import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.net.URISyntaxException;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +51,10 @@ public class Player {
     public TranslateTransition getAnimation() {
         return animation;
     }
-    public void handleJumpEvent () {
+    public void handleJumpEvent () throws URISyntaxException {
+        Media media = new Media(getClass().getResource("/resources/Sound Effects/jump.wav").toURI().toString());
+        MediaPlayer player = new MediaPlayer(media);
+        player.play();
         this.animation.pause();
         initAnimation();
         this.animation.play();
