@@ -25,16 +25,28 @@ public class MainController {
     @FXML
     private ListView<String> listOfUsers;
     @FXML
+    private ListView<Integer> total ;
+    @FXML
+    private ListView<Integer> highest;
+    @FXML
     private TextField textField;
     private boolean createdNew = true;
     User current ;
 
     public void initialize(ObservableList<User> items ) {
         HashMap<String, User> names = new HashMap<>();
+        ArrayList<String> n = new ArrayList<>();
+        ArrayList<Integer> t = new ArrayList<>();
+        ArrayList<Integer> h = new ArrayList<>();
         items.forEach(user -> {
             names.put(user.getUsername(),user);
+            n.add(user.getUsername());
+            t.add(user.getTotalstars());
+            h.add(user.getHighest());
         });
-        listOfUsers.setItems(FXCollections.observableArrayList(names.keySet()));
+        listOfUsers.setItems(FXCollections.observableArrayList(n));
+        total.setItems(FXCollections.observableArrayList(t));
+        highest.setItems(FXCollections.observableArrayList(h));
         listOfUsers.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<String>() {
                 public void changed(ObservableValue<? extends String> ov,

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
@@ -44,6 +45,12 @@
          </font>
       </Button>
       <TextField fx:id="textField" layoutX="62.0" layoutY="610.0" prefHeight="34.0" prefWidth="162.0" promptText="Add New User" />
-      <ListView fx:id="listOfUsers" blendMode="SRC_ATOP" layoutX="100.0" layoutY="232.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #272727; -fx-border-color: #ffffff;" />
+      <HBox layoutX="6.0" layoutY="221.0" prefHeight="355.0" prefWidth="374.0">
+         <children>
+            <ListView fx:id="listOfUsers" blendMode="SRC_ATOP" prefHeight="355.0" prefWidth="300.0" style="-fx-background-color: #272727; -fx-border-color: #ffffff;" />
+            <ListView fx:id="total" prefHeight="355.0" prefWidth="205.0" style="-fx-border-color: #ffffff; -fx-background-color: #272727;" />
+            <ListView fx:id="highest" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #272727; -fx-border-color: #ffffff;" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

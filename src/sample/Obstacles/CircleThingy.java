@@ -108,7 +108,7 @@ public class CircleThingy extends Obstacle {
             anim.setPath(type==3?svg:path);
             anim.setInterpolator(Interpolator.LINEAR);
 //        animation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-            anim.setCycleCount(Animation.INDEFINITE);
+            anim.setCycleCount(5000);
             this.animation.getChildren().add(anim);
             root.getChildren().add(unitCircle);
             circleArrayList.add(unitCircle);

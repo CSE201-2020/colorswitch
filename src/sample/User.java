@@ -8,6 +8,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 7368175650914175345L;
 
     private int totalStars; //TODO
+    private int Highest; //TODO
     private String username;//TODO
 //    private int gamesplayed;
 //    private int gamessaves;
@@ -20,9 +21,9 @@ public class User implements Serializable {
     @Override
     public String toString () {
         String result = "";
-        result += "\ntotal Stars: "+ totalStars;
-        result += "\nusername: "+ username;
-        result += "\nsizeOfgameList: "+ gamelist.size();
+        result += ""+ username;
+        result += ""+ totalStars;
+        result += ""+ Highest;
 //        result += "\ngamesplayed: "+ gamesplayed;
 //        result += "\ngamessaves: "+ gamessaves;
         return result;
@@ -34,6 +35,14 @@ public class User implements Serializable {
 
     public int getTotalstars() {
         return totalStars;
+    }
+
+    public void setHighest(int highest) {
+        Highest = highest;
+    }
+
+    public int getHighest() {
+        return Highest;
     }
 
     public String getUsername() {

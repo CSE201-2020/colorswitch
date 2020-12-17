@@ -25,15 +25,28 @@ public class PauseView {
         this.gameplay0 = gameplay;
     }
     public void goToHome(MouseEvent event) throws IOException {
-        System.out.println("hello");
+
+        Group root = new Group();
         hidePopup();
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("sample.fxml"));
+        // need to make the main page user specific
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "sample.fxml"
+                )
+        );
+        AnchorPane pane= loader.load();
+        Controller controller = loader.getController();
+
         Group MainRoot = new Group();
         CircleObstacle o1 = new CircleObstacle(15,-1,10,160,110);
         CircleObstacle o2 = new CircleObstacle(15,1,10,240,110);
-        CircleObstacle outerc = new CircleObstacle(70,1,10,200,350);
-        CircleObstacle innerc = new CircleObstacle(50,-1,10,200,350);
-        CircleObstacle lastc = new CircleObstacle(90,-1,10,200,350);
+        o1.getAnimation().setRate(1.5);
+        o1.getAnimation().setRate(1.5);
+        CircleObstacle outerc = new CircleObstacle(75,1,15,200,350);
+        CircleObstacle innerc = new CircleObstacle(55,-1,15,200,350);
+        CircleObstacle lastc = new CircleObstacle(95,-1,15,200,350);
+        outerc.getAnimation().setRate(1.1);
+        innerc.getAnimation().setRate(1.3);
         Group rooto1 = o1.getRoot();
         Group rooto2 = o2.getRoot();
         Group root3 = outerc.getRoot();
@@ -43,10 +56,15 @@ public class PauseView {
 
         o1.getAnimation().play();
         o2.getAnimation().play();
+//        outerc.getAnimation().setRate(0.5);
         outerc.getAnimation().play();
+//        innerc.getAnimation().setRate(0.5);
         innerc.getAnimation().play();
+        lastc.getAnimation().setRate(0.8);
         lastc.getAnimation().play();
-        Group root = new Group();
+
+        controller.initUserSpace(this.gameplay0.user);
+
         root.getChildren().setAll(pane);
         root.getChildren().add(MainRoot);
 

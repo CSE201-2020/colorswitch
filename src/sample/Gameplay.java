@@ -139,7 +139,6 @@ public class Gameplay {
                                 //postion of ball from top of screen .
                                 if (yPos < -425) tt.play();
                                 else tt.pause();
-                                if(yPos > -10) pl.getAnimation().pause();
                                 if (pl.getBall().getTranslateY() < currentPos) currentPos = addNewObstacles(currentPos);
 
                                 handleCollisions(pl);
@@ -199,7 +198,6 @@ public class Gameplay {
                                 //postion of ball from top of screen .
                                 if (yPos < -425) tt.play();
                                 else tt.pause();
-                                if(yPos > -10) pl.getAnimation().pause();
                                 if (pl.getBall().getTranslateY() < currentPos) currentPos = addNewObstacles(currentPos);
 
                                 handleCollisions(pl);

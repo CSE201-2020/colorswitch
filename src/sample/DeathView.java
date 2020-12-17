@@ -44,14 +44,32 @@ public class DeathView {
         }
     }
     public void goToHome(MouseEvent event) throws IOException {
-        System.out.println("hello");
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("sample.fxml"));
+        int currentStars = this.gameplay0.curscore;
+        this.gameplay0.user.setHighest(Math.max(currentStars, this.gameplay0.user.getHighest()));
+        this.gameplay0.user.setTotalStars(this.gameplay0.user.getTotalstars()+currentStars);
+        this.gameplay0.saveGame();
+
+        Group root = new Group();
+        hidePopup();
+        // need to make the main page user specific
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "sample.fxml"
+                )
+        );
+        AnchorPane pane= loader.load();
+        Controller controller = loader.getController();
+
         Group MainRoot = new Group();
         CircleObstacle o1 = new CircleObstacle(15,-1,10,160,110);
         CircleObstacle o2 = new CircleObstacle(15,1,10,240,110);
-        CircleObstacle outerc = new CircleObstacle(70,1,10,200,350);
-        CircleObstacle innerc = new CircleObstacle(50,-1,10,200,350);
-        CircleObstacle lastc = new CircleObstacle(90,-1,10,200,350);
+        o1.getAnimation().setRate(1.5);
+        o1.getAnimation().setRate(1.5);
+        CircleObstacle outerc = new CircleObstacle(75,1,15,200,350);
+        CircleObstacle innerc = new CircleObstacle(55,-1,15,200,350);
+        CircleObstacle lastc = new CircleObstacle(95,-1,15,200,350);
+        outerc.getAnimation().setRate(1.1);
+        innerc.getAnimation().setRate(1.3);
         Group rooto1 = o1.getRoot();
         Group rooto2 = o2.getRoot();
         Group root3 = outerc.getRoot();
@@ -61,14 +79,19 @@ public class DeathView {
 
         o1.getAnimation().play();
         o2.getAnimation().play();
+//        outerc.getAnimation().setRate(0.5);
         outerc.getAnimation().play();
+//        innerc.getAnimation().setRate(0.5);
         innerc.getAnimation().play();
+        lastc.getAnimation().setRate(0.8);
         lastc.getAnimation().play();
-        Group root = new Group();
+
+        controller.initUserSpace(this.gameplay0.user);
+
         root.getChildren().setAll(pane);
         root.getChildren().add(MainRoot);
 
-        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
+//        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
         // testing .... actually set old scene
         if (gameplay != null) {
             this.gameplay.getMainScene().setRoot(root);
@@ -84,13 +107,16 @@ public class DeathView {
 
         }
         if (gameplay0 != null) {
+            int currentStars = this.gameplay0.curscore;
+            this.gameplay0.user.setHighest(Math.max(currentStars, this.gameplay0.user.getHighest()));
+            this.gameplay0.user.setTotalStars(this.gameplay0.user.getTotalstars()+currentStars);
             this.gameplay0.hidePopup();
+            this.gameplay0.saveGame();
             Stage stage = (Stage) this.gameplay0.getMainScene().getWindow();
             Gameplay new_game = new Gameplay(700 , 9/(16.0), this.gameplay0.user);
 //        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
 //        gameplay.init(datatable)
             System.out.println(stage);
-
             stage.setTitle("gameplay");
             stage.setScene(new_game.getMainScene());
             stage.show();
@@ -104,4 +130,13 @@ public class DeathView {
             this.gameplay0.disentegrated = false;
         }
     }
+    public void hidePopup() {
+        if (gameplay != null) {
+            this.gameplay.hidePopup();
+        }
+        if (gameplay0 != null) {
+            this.gameplay0.hidePopup();
+        }
+    }
+
 }
