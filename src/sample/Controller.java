@@ -102,14 +102,16 @@ public class Controller {
     }
     @FXML
     void loadChallenges(MouseEvent event) throws Exception{
-       AnchorPane pane2= FXMLLoader.load(getClass().getResource("loadgame.fxml"));
+       AnchorPane pane2= FXMLLoader.load(getClass().getResource("Challenges.fxml"));
 
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
         Scene mainScene =new Scene(pane2, 400, 700);
-        stage.setTitle("gameplay");
+        stage.setTitle("Challenges");
         stage.setScene(mainScene);
         stage.show();
     }
+
+
 
 }

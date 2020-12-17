@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class FinishLine extends GameElement{
     private Group root = new Group();
     private Transition animation;
-
+    private int posyyy;
     FinishLine (int posY) {
         int x = 0;
-
+        posyyy=posY;
         boolean color = true;
 
         int height = 10;
@@ -51,6 +51,11 @@ public class FinishLine extends GameElement{
 
     @Override
     public int checkCollision(Player player) {
+        if(player.getBall().getTranslateY()<-500){
+            System.out.println("hellloafsdf");
+            return -1;
+        }
+        System.out.println("hereadf");
         return 0;
     }
 
