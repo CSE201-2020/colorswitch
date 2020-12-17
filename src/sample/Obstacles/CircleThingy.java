@@ -133,8 +133,8 @@ public class CircleThingy extends Obstacle {
             if (!arc.getFill().equals(ball.getFill())) {
 //                System.out.print(arc.getStroke()+" "+ball.getFill());
                 if (intersected.getBoundsInLocal().getWidth() != -1) {
-//                    player.getAnimation().pause();
-//                    this.animation.pause();
+                    player.getAnimation().pause();
+                    this.animation.pause();
                 }
             }
         }

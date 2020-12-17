@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sample.Obstacles.CircleObstacle;
 
@@ -22,15 +24,27 @@ public class DeathView {
     private SVGPath goBack;
     @FXML
     private SVGPath retryButton;
+    @FXML
+    private Text Label0;
+    @FXML
+    private Text Label1;
+    @FXML
+    private SVGPath label2;
     public void initData (GameplayChallenges gameplay) {
         this.gameplay = gameplay;
     }
     public void initData0 (Gameplay gameplay) {
         this.gameplay0 = gameplay;
+        int stars = gameplay.curscore;
+        if (stars < 5) {
+            Label0.setVisible(false);
+            Label1.setVisible(false);
+            label2.setVisible(false);
+            useStarsButton.setVisible(false);
+        }
     }
     public void goToHome(MouseEvent event) throws IOException {
         System.out.println("hello");
-        retry();
         AnchorPane pane= FXMLLoader.load(getClass().getResource("sample.fxml"));
         Group MainRoot = new Group();
         CircleObstacle o1 = new CircleObstacle(15,-1,10,160,110);
@@ -54,7 +68,7 @@ public class DeathView {
         root.getChildren().setAll(pane);
         root.getChildren().add(MainRoot);
 
-//        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
+        Stage stage=(Stage) this.gameplay.getMainScene().getWindow();
         // testing .... actually set old scene
         if (gameplay != null) {
             this.gameplay.getMainScene().setRoot(root);
@@ -67,20 +81,27 @@ public class DeathView {
     public void retry() {
         if (gameplay != null) {
             this.gameplay.hidePopup();
+
         }
         if (gameplay0 != null) {
             this.gameplay0.hidePopup();
+            Stage stage = (Stage) this.gameplay0.getMainScene().getWindow();
+            Gameplay new_game = new Gameplay(700 , 9/(16.0), this.gameplay0.user);
+//        GameplayChallenges gameplay = new GameplayChallenges(0,700 , 9/(16.0));
+//        gameplay.init(datatable)
+            System.out.println(stage);
+
+            stage.setTitle("gameplay");
+            stage.setScene(new_game.getMainScene());
+            stage.show();
         }
     }
 
     public void useStars () {
-        if (gameplay != null) {
-            this.gameplay.hidePopup();
-            System.out.println("cant hide gameplay");
-        }
         if (gameplay0 != null) {
+            this.gameplay0.curscore -= 5;
             this.gameplay0.hidePopup();
-            this.gameplay0.saveGame();
+            this.gameplay0.disentegrated = false;
         }
     }
 }

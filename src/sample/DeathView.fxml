@@ -8,23 +8,41 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="713.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DeathView">
+<AnchorPane fx:id="pane" prefHeight="713.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DeathView">
    <children>
-      <Text fill="WHITE" layoutX="130.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PAUSE" textAlignment="CENTER">
+      <Text fill="WHITE" layoutX="147.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RETRY" textAlignment="CENTER">
          <font>
-            <Font name="Andale Mono" size="46.0" />
+            <Font name="Andale Mono" size="35.0" />
          </font>
       </Text>
-      <SVGPath content="M61.44,0c33.93,0,61.44,27.51,61.44,61.44c0,33.93-27.51,61.44-61.44,61.44C27.51,122.88,0,95.37,0,61.44 C0,27.51,27.51,0,61.44,0L61.44,0z M61.44,29L30.06,59.74l7.65,4.02l23.52-24.69l23.92,24.7l7.66-4.02L61.44,29L61.44,29L61.44,29z M39.39,67.13L39.39,67.13l22.08-22.09l22.02,22.09l0,0l0,0v21.67H67.4v-15.3H55.34v15.3H39.39V67.13L39.39,67.13L39.39,67.13 L39.39,67.13z M61.44,9.09c28.91,0,52.35,23.44,52.35,52.35c0,28.91-23.44,52.35-52.35,52.35S9.09,90.35,9.09,61.44 C9.09,32.53,32.53,9.09,61.44,9.09L61.44,9.09z" fillRule="EVEN_ODD" focusTraversable="true" layoutX="-13.0" layoutY="-10.0" onMouseClicked="#goToHome" pickOnBounds="true" scaleX="0.4" scaleY="0.4">
+      <SVGPath fx:id="goBack" content="M178.5,140.25v-102L0,216.75l178.5,178.5V290.7c127.5,0,216.75,40.8,280.5,130.05C433.5,293.25,357,165.75,178.5,140.25z" fillRule="EVEN_ODD" focusTraversable="true" layoutX="-174.0" layoutY="-173.0" onMouseClicked="#goToHome" pickOnBounds="true" scaleX="0.1" scaleY="0.1">
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </SVGPath>
-      <SVGPath content="M 238.933 0 C 106.974 0 0 106.974 0 238.933 s 106.974 238.933 238.933 238.933 s 238.933 -106.974 238.933 -238.933 C 477.726 107.033 370.834 0.141 238.933 0 Z M 339.557 246.546 c -1.654 3.318 -4.343 6.008 -7.662 7.662 v 0.085 L 195.362 322.56 c -8.432 4.213 -18.682 0.794 -22.896 -7.638 c -1.198 -2.397 -1.815 -5.043 -1.8 -7.722 V 170.667 c -0.004 -9.426 7.633 -17.07 17.059 -17.075 c 2.651 -0.001 5.266 0.615 7.637 1.8 l 136.533 68.267 C 340.331 227.863 343.762 238.11 339.557 246.546 Z" layoutX="-39.0" layoutY="105.0" onMouseClicked="#hidePopup" pickOnBounds="true" scaleX="0.25" scaleY="0.25">
+      <SVGPath fx:id="retryButton" content="m464.022 232h-.022a24 24 0 0 0 -23.98 24.021 184.063 184.063 0 0 1 -289.527 150.688c-83.1-58.188-103.369-173.136-45.181-256.237s173.137-103.372 256.237-45.182a184.078 184.078 0 0 1 34.012 30.71h-67.54a24 24 0 0 0 0 48h112a24 24 0 0 0 24-24v-112a24 24 0 0 0 -48 0v39.967a234.175 234.175 0 0 0 -26.94-22 231.982 231.982 0 1 0 -266.119 380.061 230.285 230.285 0 0 0 132.567 42.015 234.971 234.971 0 0 0 40.776-3.585 232.025 232.025 0 0 0 191.716-228.479 24 24 0 0 0 -23.999-23.979z" fill="#02db1f" layoutX="-57.0" layoutY="72.0" onMouseClicked="#retry" pickOnBounds="true" scaleX="0.15" scaleY="0.15">
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />
          </cursor></SVGPath>
-      <SVGPath fx:id="saveButton" content="m511.927 126.537c-.279-2.828-1.38-5.666-3.315-8.027-.747-.913 6.893 6.786-114.006-114.113-2.882-2.882-6.794-4.395-10.612-4.394-9.096 0-329.933 0-338.995 0-24.813 0-45 20.187-45 45v422c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45 .001-364.186.041-339.316-.072-340.466zm-166.927-96.534v98c0 8.271-6.729 15-15 15h-19v-113zm-64 0v113h-139c-8.271 0-15-6.729-15-15v-98zm64 291h-218v-19c0-8.271 6.729-15 15-15h188c8.271 0 15 6.729 15 15zm-218 161v-131h218v131zm355-15c0 8.271-6.729 15-15 15h-92c0-19.555 0-157.708 0-180 0-24.813-20.187-45-45-45h-188c-24.813 0-45 20.187-45 45v180h-52c-8.271 0-15-6.729-15-15v-422c0-8.271 6.729-15 15-15h52v98c0 24.813 20.187 45 45 45h188c24.813 0 45-20.187 45-45v-98h2.787l104.213 104.214z" fill="#47ab25" layoutX="-57.0" layoutY="188.0" onMouseClicked="#saveGame" pickOnBounds="true" scaleX="0.1" scaleY="0.1">
+      <SVGPath fx:id="useStarsButton" content="M185.492,211.636v109.588l209.449-123.747L185.492,73.718v109.611L0,73.718v247.506L185.492,211.636   z" fill="#47ab25" layoutX="37.0" layoutY="281.0" onMouseClicked="#useStars" pickOnBounds="true" scaleX="0.1" scaleY="0.1">
+         <effect>
+            <Glow />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </SVGPath>
+      <Text fx:id="Label0" fill="WHITE" layoutX="122.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Continue ?" textAlignment="CENTER">
+         <font>
+            <Font name="Andale Mono" size="26.0" />
+         </font>
+      </Text>
+      <Text fx:id="Label1" fill="#ee0707" layoutX="127.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-5" textAlignment="CENTER">
+         <font>
+            <Font name="Abyssinica SIL" size="22.0" />
+         </font>
+      </Text>
+      <SVGPath fx:id="label2" content="m510.652344 185.902344c-3.351563-10.367188-12.546875-17.730469-23.425782-18.710938l-147.773437-13.417968-58.433594-136.769532c-4.308593-10.023437-14.121093-16.511718-25.023437-16.511718s-20.714844 6.488281-25.023438 16.535156l-58.433594 136.746094-147.796874 13.417968c-10.859376 1.003906-20.03125 8.34375-23.402344 18.710938-3.371094 10.367187-.257813 21.738281 7.957031 28.90625l111.699219 97.960937-32.9375 145.089844c-2.410156 10.667969 1.730468 21.695313 10.582031 28.09375 4.757813 3.4375 10.324219 5.1875 15.9375 5.1875 4.839844 0 9.640625-1.304687 13.949219-3.882813l127.46875-76.183593 127.421875 76.183593c9.324219 5.609376 21.078125 5.097657 29.910156-1.304687 8.855469-6.417969 12.992187-17.449219 10.582031-28.09375l-32.9375-145.089844 111.699219-97.941406c8.214844-7.1875 11.351563-18.539063 7.980469-28.925781zm0 0" fill="#47ab25" layoutX="-92.0" layoutY="232.0"  pickOnBounds="true" scaleX="0.04" scaleY="0.04">
          <effect>
             <Glow />
          </effect>

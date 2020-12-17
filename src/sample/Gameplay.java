@@ -90,6 +90,8 @@ public class Gameplay {
     Label score;
     int curscore=0;  // TODO
     transient User user;
+    AnchorPane panePause = null;
+    AnchorPane paneDeath = null;
 
 
     Gameplay (int height, double ratio, User user) {
@@ -240,13 +242,44 @@ public class Gameplay {
         return N.getDist();
     }
 
+    void initiateDeathSequence () {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "DeathView.fxml"
+                )
+        );
+        try {
+            paneDeath = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DeathView controller = loader.getController();
+        controller.initData0(this);
+
+        popup = new Popup();
+        if (paneDeath != null ) {
+            System.out.println(popup.getContent().setAll(paneDeath));
+        }
+        Stage stage=(Stage) this.getMainScene().getWindow();
+        if (!popup.isShowing()) {
+            pauseEverything();
+            popup.show(stage);
+            ColorAdjust colorAdjust2 = new ColorAdjust();
+            colorAdjust2.setBrightness(-0.6);
+            mainScene.getRoot().setEffect(colorAdjust2);
+        }
+
+
+    }
+
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
         for (GameElement node : obstacles ) {
             // detecting collision goes here.
-//            int status = node.checkCollision(pl);
-            int status  = 3;
+            int status = node.checkCollision(pl);
+//            int status  = 3;
             if (status < 0) {
                  if (!disentegrated) {
  //                    System.out.print("circle ");
@@ -255,6 +288,9 @@ public class Gameplay {
                      ObstaclesRoot.getChildren().add(dis.getRoot());
                      disentegrated = true;
                      System.out.println("detected");
+                     initiateDeathSequence () ;
+                     toBeRemoved = node;
+                     ObstaclesRoot.getChildren().remove(node.getRoot());
                  }
             }
             else if (status == 1) {
@@ -292,18 +328,14 @@ public class Gameplay {
         );
 
         pause.setCursor(Cursor.OPEN_HAND);
-        AnchorPane pane = null;
         try {
-            pane = loader.load();
+            panePause = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         PauseView controller = loader.getController();
         controller.initData0(this);
-
-        popup = new Popup();
-        if (pane != null )popup.getContent().add(pane);
 
         EventHandler<MouseEvent> event =
                 new EventHandler<MouseEvent>() {
@@ -312,6 +344,15 @@ public class Gameplay {
                     {
                         Node node=(Node) e.getSource();
                         Stage stage=(Stage) node.getScene().getWindow();
+                        popup = new Popup();
+                        try {
+                            panePause = loader.load();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        if (panePause != null ) {
+                            popup.getContent().setAll(panePause);
+                        }
                         if (!popup.isShowing()) {
                             pauseEverything();
                             popup.show(stage);
