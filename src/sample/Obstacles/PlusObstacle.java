@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import sample.Obstacle;
 import sample.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,8 +22,11 @@ public class PlusObstacle extends Obstacle {
     final private RotateTransition animation;
     final private ArrayList<Line> lineArrayList = new ArrayList<>();
     final private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")));
+    ArrayList<Object> args = new ArrayList<>();
 
     public PlusObstacle(int radius, int direction, int thickness, int posX, int posY) {
+        args.add(radius);args.add(direction);args.add(thickness);args.add(posX);args.add(posY);
+
         root = new Group();
 
         for (int i = 0 ;i < 4; ++i) {
@@ -149,5 +153,9 @@ public class PlusObstacle extends Obstacle {
             }
             return 0;
         }
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
+    }
 }
 

@@ -32,7 +32,9 @@ public class CircleObstacle extends Obstacle {
     final private RotateTransition animation;
     final private ArrayList<Arc> arcArrayList = new ArrayList<>();
     final private ArrayList<Color> colors = new ArrayList<>(Arrays.asList(Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")));
+    ArrayList<Object> args = new ArrayList<>();
     public CircleObstacle(int radius, int direction, int thickness, int posX, int posY) {
+        args.add(radius);args.add(direction);args.add(thickness);args.add(posX);args.add(posY);
         // Creating Circle
         root = new Group();
         int deg = 0;
@@ -171,6 +173,11 @@ public class CircleObstacle extends Obstacle {
             }
         }
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 
 }

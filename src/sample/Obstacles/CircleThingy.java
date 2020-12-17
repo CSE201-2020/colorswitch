@@ -16,6 +16,8 @@ public class CircleThingy extends Obstacle {
     final private ArrayList<Circle> circleArrayList = new ArrayList<>();
     private Timer timer ;
     final private Color colors [] = {Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#FAE100"),Color.web("#900DFF")};
+    ArrayList<Object> args =new ArrayList<>();
+
     class delayTask extends TimerTask {
         @Override
         public void run() {
@@ -27,6 +29,7 @@ public class CircleThingy extends Obstacle {
         timer.schedule(new delayTask(), seconds * 1000);
     }
     public CircleThingy (int radius, int direction, int posX, int posY, int type) {
+        args.add(radius);args.add(direction);args.add(posX);args.add(posY);args.add(type);
 
         int N_per_SIDE = 5;
         int SIDE = 4;
@@ -137,6 +140,11 @@ public class CircleThingy extends Obstacle {
             }
         }
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 
     @Override

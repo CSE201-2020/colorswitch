@@ -24,7 +24,11 @@ public class HorizontalLineObstacle extends Obstacle {
     final private TranslateTransition animation;
     final private ArrayList<Line> arcArrayList = new ArrayList<>();
     final private Color colors [] = {Color.web("#FAE100"),Color.web("#FF0181"),Color.web("#32DBF0"),Color.web("#900DFF")};
+    ArrayList<Object> args = new ArrayList<>();
+
     public HorizontalLineObstacle(int size, int direction, int thickness, int posX, int posY) {
+        args.add(size);args.add(direction);args.add(thickness);args.add(posX);args.add(posY);
+
         root = new Group();
 
         for (int i = 0 ;i <10; ++i) {
@@ -81,6 +85,11 @@ public class HorizontalLineObstacle extends Obstacle {
             }
         }
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return args;
     }
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {

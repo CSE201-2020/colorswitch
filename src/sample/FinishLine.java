@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 
+import java.util.ArrayList;
+
 public class FinishLine extends GameElement{
     private Group root = new Group();
     private Transition animation;
@@ -50,5 +52,10 @@ public class FinishLine extends GameElement{
     @Override
     public int checkCollision(Player player) {
         return 0;
+    }
+
+    @Override
+    public ArrayList<Object> getArgs() {
+        return null;
     }
 }

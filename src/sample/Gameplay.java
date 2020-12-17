@@ -45,19 +45,19 @@ public class Gameplay {
       final int presetLength = 9;
       int currentPos = -600 ;
       transient Player pl; // TODO // divide into posy, color
-        Queue<sample.DB> obstacles= new LinkedList<>(); // TODO // divide into posY, rotation
+        Queue<sample.DB> obstac= new LinkedList<>(); // TODO // divide into posY, rotation
         int curscore=0;  // TODO
         DB() {
         }
         void updateValues(Queue<sample.DB> obstacles, int cur) {
-            this.obstacles = new LinkedList<>(obstacles);
+            this.obstac = new LinkedList<>(obstacles);
             this.curscore = cur;
             System.out.println("savingsavingsavingsavingsavingsavingsavingsavingsavingsavingsaving"+obstacles);
         }
-        void initializeObstacles(Group ObstaclesRoot) {
-            if (this.obstacles == null) return;
-            for (sample.DB obx: this.obstacles) {
-                obx.initializeObstacle(ObstaclesRoot);
+        void initializeObstacles(Group ObstaclesRoot, Queue <GameElement> obstacles) {
+            if (this.obstac == null) return;
+            for (sample.DB obx: this.obstac) {
+                obx.initializeObstacle(ObstaclesRoot, obstacles);
             }
         }
         @Override
@@ -65,7 +65,7 @@ public class Gameplay {
             String result = "";
             result += "\ncurrentPos: "+ currentPos;
             result += "\npl: "+ pl;
-            result += "\nobstacles: "+ obstacles;
+            result += "\nobstacles: "+ obstac;
             result += "\ncurrScore: "+ curscore;
 //        result += "\ngamesplayed: "+ gamesplayed;
 //        result += "\ngamessaves: "+ gamessaves;
@@ -90,6 +90,8 @@ public class Gameplay {
     Label score;
     int curscore=0;  // TODO
     transient User user;
+    AnchorPane panePause = null;
+    AnchorPane paneDeath = null;
 
 
     Gameplay (int height, double ratio, User user) {
@@ -150,7 +152,7 @@ public class Gameplay {
         System.out.println("Game Info found !:"+ gameInfo);
 
         ObstaclesRoot = new Group();
-        gameInfo.initializeObstacles(ObstaclesRoot);
+        gameInfo.initializeObstacles(ObstaclesRoot, this.obstacles);
         pl = initiatePlayer();
         ObstaclesRoot.getChildren().add(pl.getBall());
         Group MainRoot = new Group();
@@ -209,10 +211,10 @@ public class Gameplay {
         System.out.println("----------------"+ N.getObstacleList()+""+N.getDist());
         int NEW_LENGTH = NEW.size();
         // gotta delete NEW_LENGTH from queue to save memory.
-//        for (int i =0;i< NEW_LENGTH;i++) {
-//            GameElement toRemove = obstacles.poll();
-//            ObstaclesRoot.getChildren().remove(toRemove.getRoot());
-//        }
+        for (int i =0;i< NEW_LENGTH;i++) {
+            GameElement toRemove = obstacles.poll();
+            if (toRemove != null) ObstaclesRoot.getChildren().remove(toRemove.getRoot());
+        }
         //check queue size ::
         //System.out.println(obstacles.size()+" "+" "+ObstaclesRoot.getChildren().size());
         for (GameElement obx: NEW) {
@@ -240,6 +242,37 @@ public class Gameplay {
         return N.getDist();
     }
 
+    void initiateDeathSequence () {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "DeathView.fxml"
+                )
+        );
+        try {
+            paneDeath = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DeathView controller = loader.getController();
+        controller.initData0(this);
+
+        popup = new Popup();
+        if (paneDeath != null ) {
+            System.out.println(popup.getContent().setAll(paneDeath));
+        }
+        Stage stage=(Stage) this.getMainScene().getWindow();
+        if (!popup.isShowing()) {
+            pauseEverything();
+            popup.show(stage);
+            ColorAdjust colorAdjust2 = new ColorAdjust();
+            colorAdjust2.setBrightness(-0.6);
+            mainScene.getRoot().setEffect(colorAdjust2);
+        }
+
+
+    }
+
     void handleCollisions(Player  pl) {
 
         GameElement toBeRemoved = null;  // remove star and colorchanger
@@ -255,6 +288,9 @@ public class Gameplay {
                      ObstaclesRoot.getChildren().add(dis.getRoot());
                      disentegrated = true;
                      System.out.println("detected");
+                     initiateDeathSequence () ;
+                     toBeRemoved = node;
+                     ObstaclesRoot.getChildren().remove(node.getRoot());
                  }
             }
             else if (status == 1) {
@@ -292,18 +328,14 @@ public class Gameplay {
         );
 
         pause.setCursor(Cursor.OPEN_HAND);
-        AnchorPane pane = null;
         try {
-            pane = loader.load();
+            panePause = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         PauseView controller = loader.getController();
         controller.initData0(this);
-
-        popup = new Popup();
-        if (pane != null )popup.getContent().add(pane);
 
         EventHandler<MouseEvent> event =
                 new EventHandler<MouseEvent>() {
@@ -312,6 +344,15 @@ public class Gameplay {
                     {
                         Node node=(Node) e.getSource();
                         Stage stage=(Stage) node.getScene().getWindow();
+                        popup = new Popup();
+                        try {
+                            panePause = loader.load();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        if (panePause != null ) {
+                            popup.getContent().setAll(panePause);
+                        }
                         if (!popup.isShowing()) {
                             pauseEverything();
                             popup.show(stage);
